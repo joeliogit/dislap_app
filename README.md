@@ -1,576 +1,589 @@
 # 🧠 Disslapp — Plataforma Web para el Tratamiento de la Dislexia
 
-> Herramienta clínica digital diseñada para psicólogos, que facilita el tratamiento de pacientes con dislexia mediante módulos de juegos terapéuticos, seguimiento de avances y un sistema de logros motivacional.
+> Herramienta clínica digital que conecta psicólogos con sus pacientes a través de juegos terapéuticos, seguimiento de avances en tiempo real y un panel de control profesional.
 
 ---
 
 ## 📋 Tabla de Contenidos
 
 1. [Descripción General](#descripción-general)
-2. [Mercado Objetivo](#mercado-objetivo)
-3. [Paleta de Diseño](#paleta-de-diseño)
-4. [Arquitectura de Secciones](#arquitectura-de-secciones)
-   - [Landing Page / Home](#1-landing-page--home)
-   - [Autenticación (Login & Registro)](#2-autenticación-login--registro)
-   - [Dashboard del Paciente](#3-dashboard-del-paciente)
-   - [Sección de Juegos](#4-sección-de-juegos)
-   - [Niveles de Tratamiento](#5-niveles-de-tratamiento)
-   - [Avances y Logros](#6-avances-y-logros)
-   - [Panel del Psicólogo / Administrador](#7-panel-del-psicólogo--administrador)
-   - [Sobre la Doctora](#8-sobre-la-doctora)
-   - [Sobre Nosotros — Disslapp](#9-sobre-nosotros--disslapp)
-5. [Sistema de Logros y Gamificación](#sistema-de-logros-y-gamificación)
-6. [Flujos de Usuario](#flujos-de-usuario)
-7. [Stack Tecnológico Propuesto](#stack-tecnológico-propuesto)
-8. [Estructura de Archivos](#estructura-de-archivos)
-9. [Consideraciones de Accesibilidad](#consideraciones-de-accesibilidad)
-10. [Roadmap de Implementación](#roadmap-de-implementación)
+2. [Stack Tecnológico](#stack-tecnológico)
+3. [Estructura del Proyecto](#estructura-del-proyecto)
+4. [Instalación y Configuración](#instalación-y-configuración)
+5. [Base de Datos](#base-de-datos)
+6. [Backend — API REST](#backend--api-rest)
+7. [Frontend — React App](#frontend--react-app)
+8. [Autenticación](#autenticación)
+9. [Sistema de Juegos](#sistema-de-juegos)
+10. [Panel del Doctor](#panel-del-doctor)
+11. [Sistema de XP y Niveles](#sistema-de-xp-y-niveles)
+12. [Variables de Entorno](#variables-de-entorno)
+13. [Credenciales de Prueba](#credenciales-de-prueba)
 
 ---
 
 ## 📖 Descripción General
 
-**Disslapp** es una plataforma web terapéutica que apoya el tratamiento de la dislexia. Está pensada para ser usada por psicólogos como herramienta clínica complementaria; el profesional configura el tratamiento y el paciente interactúa con los módulos de juegos y ejercicios durante y entre sesiones.
+**Disslapp** es una plataforma web terapéutica con dos tipos de usuarios:
 
-La plataforma combina:
-- **Intervención lúdica**: juegos diseñados con principios pedagógicos para dislexia.
-- **Progresión estructurada**: niveles de dificultad alineados con etapas del tratamiento.
-- **Seguimiento clínico**: reportes visuales y exportables del avance del paciente.
-- **Motivación intrínseca**: sistema de logros, insignias y recompensas.
+- **Pacientes**: juegan minijuegos diseñados para trabajar habilidades afectadas por la dislexia (fonología, decodificación, segmentación silábica, etc.). Ganan XP, suben de nivel y desbloquean logros.
+- **Psicólogos**: acceden a un panel de control donde ven el progreso de todos sus pacientes, el historial de sesiones, el tiempo de respuesta por habilidad y métricas de tratamiento.
 
 ---
 
-## 🎯 Mercado Objetivo
-
-| Rol | Descripción |
-|-----|-------------|
-| **Psicólogo / Terapeuta** | Usuario principal. Crea perfiles de pacientes, asigna niveles y monitorea avances. |
-| **Paciente (niño/adulto)** | Usuario secundario. Juega, completa retos y visualiza sus logros. |
-| **Institución / Clínica** | Entidad que licencia la plataforma para múltiples profesionales. |
-
----
-
-## 🎨 Paleta de Diseño
-
-### Colores Principales
-
-| Nombre | Hex | Uso |
-|--------|-----|-----|
-| **Morado Profundo** | `#4A1D96` | Fondos principales, headers |
-| **Morado Vibrante** | `#7C3AED` | Botones primarios, acentos |
-| **Lila Suave** | `#C4B5FD` | Textos secundarios, bordes |
-| **Verde Esmeralda** | `#059669` | Éxito, logros, progreso |
-| **Verde Lima** | `#34D399` | Barras de progreso, badges |
-| **Verde Menta** | `#A7F3D0` | Fondos de tarjetas de logro |
-| **Blanco Humo** | `#F8F5FF` | Fondos claros, texto sobre oscuro |
-| **Gris Suave** | `#E5E7EB` | Divisores, inputs inactivos |
-
-### Gradientes Clave
-
-```css
-/* Gradiente hero principal */
-background: linear-gradient(135deg, #4A1D96 0%, #7C3AED 50%, #059669 100%);
-
-/* Gradiente de tarjetas de logro */
-background: linear-gradient(135deg, #A7F3D0 0%, #C4B5FD 100%);
-
-/* Gradiente de botón primario */
-background: linear-gradient(90deg, #7C3AED, #059669);
-```
-
-### Tipografía
-
-| Uso | Fuente | Peso |
-|-----|--------|------|
-| Títulos | `Nunito` (Google Fonts) | 700, 800 |
-| Cuerpo | `Nunito` | 400, 600 |
-| Juegos / Ejercicios | `OpenDyslexic` o `Lexie Readable` | 400 |
-
-> ⚠️ **Nota de accesibilidad**: Todas las fuentes usadas en los módulos de ejercicios deben ser tipografías diseñadas para dislexia. `OpenDyslexic` es de uso libre.
-
-### Elementos Visuales
-
-- **Glassmorphism** para tarjetas: fondo semitransparente con `backdrop-filter: blur(12px)`
-- **Bordes redondeados** (`border-radius: 16px–24px`) para entorno amigable
-- **Micro-animaciones** en hover, transiciones de nivel y celebración de logros
-- **Iconografía**: Lucide Icons o Heroicons (línea limpia y moderna)
-- **Ilustraciones**: estilo flat/cartoon amigable para todas las edades
-- **Logo Disslapp**: cerebro estilizado + libro abierto, en degradado morado-verde
-
----
-
-## 🏗️ Arquitectura de Secciones
-
-### 1. Landing Page / Home
-
-**URL**: `/`
-
-**Propósito**: Primera impresión de la plataforma para psicólogos y/o instituciones interesadas.
-
-**Contenido**:
-- **Hero Section**: Headline impactante + ilustración animada + CTA principal ("Comenzar Gratis" / "Ver Demo")
-- **Propuesta de Valor**: 3–4 tarjetas con los pilares de la plataforma (Juegos, Niveles, Avances, Comunidad)
-- **Cómo funciona**: Proceso en 3 pasos con iconos animados
-  1. El psicólogo crea el perfil del paciente
-  2. El paciente juega y completa ejercicios
-  3. El profesional monitorea el progreso en tiempo real
-- **Testimonios**: Carrusel de reseñas de psicólogos (con foto, nombre, especialidad)
-- **Estadísticas**: Contador animado (pacientes atendidos, sesiones completadas, logros desbloqueados)
-- **CTA Final**: Sección de registro / contacto con formulario
-- **Footer**: Links de navegación, redes sociales, política de privacidad
-
----
-
-### 2. Autenticación (Login & Registro)
-
-**URLs**: `/login`, `/registro`
-
-#### Login de Pacientes
-- Campo: Nombre de usuario o código de paciente
-- Campo: Contraseña
-- Opción: "Recordarme"
-- CTA secundario: "¿Olvidaste tu contraseña?"
-- Diseño: Pantalla dividida — ilustración animada (izquierda) + formulario (derecha)
-- Botón de acceso rápido con código QR (el psicólogo puede mostrar el QR al paciente)
-
-#### Login de Psicólogos / Admin
-- Email institucional
-- Contraseña
-- Activación de 2FA (TOTP) como capa de seguridad opcional
-- Acceso al Panel de Administración
-
-#### Registro
-- Sólo disponible para psicólogos (rol profesional)
-- Campos: Nombre completo, Correo, Cédula/No. de licencia, Contraseña, Confirmar contraseña
-- Verificación de correo mediante enlace
-- Los pacientes son creados por el psicólogo, no se registran solos
-
-#### Recuperación de Contraseña
-- Flujo por correo electrónico con enlace temporal
-
----
-
-### 3. Dashboard del Paciente
-
-**URL**: `/paciente/dashboard`
-
-**Propósito**: Pantalla principal tras el login del paciente. Amigable, visual y motivacional.
-
-**Elementos**:
-- **Saludo personalizado**: "¡Hola, [Nombre]! 🌟 ¿Listo para jugar hoy?"
-- **Nivel actual**: Badge prominente con el nivel en curso y barra de XP
-- **Acceso rápido** a:
-  - Juego del día (recomendado por el psicólogo)
-  - Continuar donde dejé (último juego)
-  - Ver mis logros
-- **Racha diaria**: Contador de días consecutivos jugando (estilo Duolingo)
-- **Mini avance visual**: Rueda o mapa de progreso del tratamiento
-- **Motivación diaria**: Frase inspiradora rotativa
-- **Notificaciones**: Badges de nuevos logros o mensajes del psicólogo
-
----
-
-### 4. Sección de Juegos
-
-**URL**: `/paciente/juegos`
-
-**Propósito**: Catálogo y acceso a todos los juegos terapéuticos disponibles según el nivel del paciente.
-
-#### Tipos de Juegos Planificados
-
-| Juego | Descripción | Habilidad trabajada |
-|-------|-------------|---------------------|
-| **Letras Saltarinas** | Ordenar letras mezcladas para formar palabras | Conciencia fonológica |
-| **El Espejo de Palabras** | Identificar si dos palabras son iguales o diferentes | Discriminación visual |
-| **Construye la Palabra** | Arrastrar sílabas para formar palabras | Decodificación |
-| **El Dado Mágico** | Lanzar dado y pronunciar el fonema que cae | Conciencia fonémica |
-| **Rima y Encuentra** | Seleccionar imágenes que rimen con la palabra mostrada | Rima y fonología |
-| **Lectura Veloz** | Leer un párrafo corto y responder preguntas | Comprensión lectora |
-| **El Laberinto de Letras** | Navegar un laberinto encontrando letras en orden | Memoria y secuencia |
-| **Colorea la Sílaba** | Colorear sílabas según su posición en la palabra | Segmentación silábica |
-
-#### Diseño del Catálogo
-- Grid de tarjetas con ilustración del juego, nombre, nivel requerido y estrellas obtenidas
-- Filtro por: Habilidad, Nivel, Duración estimada
-- Badge "BLOQUEADO" para juegos de niveles superiores
-- Badge "NUEVO" o "RECOMENDADO HOY" según asignación del psicólogo
-- Barra de progreso dentro de cada tarjeta (# intentos / # estrellas)
-
-#### Pantalla de Juego
-- Instrucciones breves con opción de audio (texto a voz)
-- Zona de juego central limpia y amplia
-- Temporizador opcional (configurable por el psicólogo)
-- Botón de pausa / salir
-- Retroalimentación inmediata: animación de ✅ o ❌ con sonido
-- Pantalla de resultados: puntaje, estrellas ganadas, XP obtenida, botón "Jugar de nuevo" o "Siguiente"
-
----
-
-### 5. Niveles de Tratamiento
-
-**URL**: `/paciente/niveles`
-
-**Propósito**: Mostrar la progresión estructurada del tratamiento, con una visual tipo "mapa de aventura".
-
-#### Estructura de Niveles
-
-| Nivel | Nombre | Enfoque | Desbloqueo |
-|-------|--------|---------|------------|
-| 1 | **Explorador** | Conciencia fonológica básica | Inicial (siempre disponible) |
-| 2 | **Aventurero** | Discriminación visual y fonémica | Completar 80% del Nivel 1 |
-| 3 | **Constructor** | Decodificación de palabras | Completar 80% del Nivel 2 |
-| 4 | **Narrador** | Comprensión lectora sencilla | Completar 80% del Nivel 3 |
-| 5 | **Maestro** | Fluidez lectora y escritura | Completar 80% del Nivel 4 |
-
-#### Visualización
-- **Mapa de aventura**: Ruta visual con paradas (niveles) conectadas por un camino
-- Cada "parada" muestra: ícono, nombre del nivel, % completado, estado (activo/bloqueado/completado)
-- Efecto de "desbloqueo" animado cuando el paciente alcanza un nuevo nivel
-- Línea de tiempo lateral opcional para ver avance histórico
-
-#### Avance por Nivel
-- Cada nivel contiene **5–8 juegos asignados**
-- El psicólogo puede personalizar qué juegos forman parte de cada nivel para cada paciente
-- Se requiere un mínimo de XP y sesiones para avanzar
-- El psicólogo tiene la aprobación final para desbloquear el siguiente nivel
-
----
-
-### 6. Avances y Logros
-
-**URL**: `/paciente/avances`
-
-**Propósito**: Mostrar de forma visual y motivacional el progreso del paciente a lo largo del tratamiento.
-
-#### Subsecciones
-
-##### 6.1 Resumen de Avance
-- Gráfico de línea / área: XP acumulada por semana
-- Gráfico de barras: Sesiones completadas por mes
-- Gráfico radial (spider/radar): Habilidades trabajadas (fonología, decodificación, comprensión, etc.)
-- Estadísticas clave: Total de sesiones, tiempo jugado, racha máxima, nivel actual
-
-##### 6.2 Sistema de Logros (Badges / Insignias)
-
-| Categoría | Ejemplos de Logros |
-|-----------|-------------------|
-| **Primera vez** | Primera sesión completada, Primer juego perfecto |
-| **Constancia** | 3 días seguidos, 7 días seguidos, 30 días seguidos |
-| **Rendimiento** | 3 estrellas en 5 juegos, Puntaje perfecto en un nivel |
-| **Exploración** | Probar todos los tipos de juego, Completar un nivel extra |
-| **Especiales** | Logro del mes, MVP de la semana (asignado por el psicólogo) |
-
-Cada logro tiene:
-- Ilustración/icono colorido
-- Nombre y descripción
-- Fecha de obtención
-- Estado: obtenido (color) / bloqueado (gris con candado)
-
-##### 6.3 Historial de Sesiones
-- Lista cronológica de sesiones pasadas
-- Por sesión: fecha, juegos jugados, XP ganada, notas del psicólogo (si las hay)
-
-##### 6.4 Reporte Exportable (solo para el psicólogo)
-- PDF generado con: resumen del paciente, gráficos de avance, logros obtenidos, recomendaciones automáticas
-- Formato clínico/profesional con branding de Disslapp
-
----
-
-### 7. Panel del Psicólogo / Administrador
-
-**URL**: `/psicologo/dashboard`
-
-**Propósito**: Panel de control para el profesional. Gestión de pacientes, asignación de niveles/juegos y monitoreo.
-
-**Funcionalidades**:
-
-#### 7.1 Vista General
-- Cards de resumen: total de pacientes, sesiones esta semana, logros desbloqueados hoy, pacientes sin actividad reciente
-- Lista de actividad reciente de todos los pacientes
-
-#### 7.2 Gestión de Pacientes
-- Crear, editar y archivar pacientes
-- Campos por paciente: Nombre, apellido, edad, fecha de diagnóstico, nivel inicial asignado, notas clínicas
-- Generar código de acceso / QR para el paciente
-
-#### 7.3 Asignación de Tratamiento
-- Seleccionar qué juegos son accesibles por nivel para cada paciente
-- Configurar parámetros: temporizador activado/desactivado, dificultad del juego, número de repeticiones recomendadas
-
-#### 7.4 Monitoreo de Avance
-- Vista de progreso individual por paciente
-- Alertas automáticas: paciente sin actividad en X días, paciente listo para subir de nivel
-- Exportar reporte de avance en PDF
-
-#### 7.5 Mensajes / Notas
-- El psicólogo puede dejar notas motivacionales visibles para el paciente en su dashboard
-- Historial de notas por sesión
-
----
-
-### 8. Sobre la Doctora
-
-**URL**: `/doctora`
-
-**Propósito**: Presentar a la profesional detrás de Disslapp, generando confianza y credibilidad.
-
-**Contenido**:
-- **Foto profesional** de la doctora (alta calidad, fondo neutro o de consultorio)
-- **Nombre completo** y título profesional
-- **Trayectoria**:
-  - Formación académica (licenciatura, maestría, doctorado)
-  - Especializaciones en dislexia y neurodesarrollo
-  - Años de experiencia clínica
-- **Filosofía de tratamiento**: Párrafo breve sobre su enfoque terapéutico
-- **Publicaciones / Investigaciones** (si aplica): lista de artículos o presentaciones
-- **Afiliaciones**: Colegios, asociaciones o instituciones a las que pertenece
-- **Cita / testimonio personal**: Sus palabras sobre por qué creó Disslapp
-- **CTA**: Botón para contactarla o agendar una consulta
-- **Redes Profesionales**: LinkedIn, ResearchGate (opcional)
-
-**Diseño**:
-- Layout de dos columnas: foto (izquierda) + info (derecha)
-- Fondo con degradado suave morado-blanco
-- Timeline visual para la trayectoria académica/profesional
-
----
-
-### 9. Sobre Nosotros — Disslapp
-
-**URL**: `/nosotros`
-
-**Propósito**: Contar la historia y misión de Disslapp como empresa/plataforma.
-
-**Contenido**:
-- **Nuestra Historia**: Cómo nació Disslapp, el problema que resuelve y la motivación detrás
-- **Misión**: Democratizar el acceso a herramientas terapéuticas efectivas para la dislexia
-- **Visión**: Ser la plataforma líder en Latinoamérica para el tratamiento digital de la dislexia
-- **Valores**: Empatía, Innovación, Evidencia Científica, Inclusión
-- **El Equipo**: Cards del equipo con foto, nombre y rol (desarrolladores, diseñadores, asesores clínicos)
-- **Impacto**: Métricas animadas (pacientes, países, sesiones)
-- **Alianzas / Partners**: Logos de instituciones o universidades aliadas
-- **Contacto**:
-  - Formulario de contacto (nombre, correo, mensaje)
-  - Correo institucional
-  - Redes sociales
-- **Prensa / Media Kit** (opcional): Enlace de descarga del kit de prensa
-
----
-
-## 🏆 Sistema de Logros y Gamificación
-
-### Puntos de Experiencia (XP)
-
-| Acción | XP Otorgada |
-|--------|-------------|
-| Completar una sesión | +50 XP |
-| Puntaje perfecto en un juego | +100 XP |
-| 3 estrellas en un juego | +75 XP |
-| Racha diaria (3 días) | +150 XP |
-| Completar un nivel | +500 XP |
-| Primer intento sin errores | +200 XP |
-
-### Niveles de XP del Paciente
-
-| Rango XP | Título |
-|----------|--------|
-| 0 – 499 | 🌱 Semilla |
-| 500 – 1499 | 🌟 Explorador |
-| 1500 – 3499 | 🚀 Aventurero |
-| 3500 – 6999 | 🦁 Constructor |
-| 7000 – 9999 | 📖 Narrador |
-| 10000+ | 🏆 Maestro Disslapp |
-
-### Racha Diaria
-- El sistema registra días consecutivos de actividad
-- Racha perdida → animación de "reinicio" amigable (sin penalización negativa)
-- Bonus de XP por mantener la racha: +10% acumulativo por cada semana
-
-### Celebraciones
-- **Confetti animado** al completar un nivel o desbloquear un logro especial
-- **Modal de celebración** con ilustración, nombre del logro y XP ganada
-- **Sonido opcional** (toggle de audio en configuración)
-
----
-
-## 🧭 Flujos de Usuario
-
-### Flujo del Paciente
-```
-Landing → Login (código) → Dashboard Personal
-  → Jugar (Catálogo → Seleccionar Juego → Jugar → Resultados)
-  → Ver Avances (Gráficos + Logros)
-  → Ver Niveles (Mapa de Aventura)
-```
-
-### Flujo del Psicólogo
-```
-Landing → Login (email + contraseña) → Panel del Psicólogo
-  → Crear/Gestionar Pacientes
-  → Asignar Niveles y Juegos
-  → Monitorear Avances
-  → Generar Reportes PDF
-  → Dejar Notas al Paciente
-```
-
----
-
-## 💻 Stack Tecnológico Propuesto
+## 💻 Stack Tecnológico
 
 ### Frontend
-| Tecnología | Rol |
-|-----------|-----|
-| **React + Vite** | Framework SPA principal |
-| **React Router v6** | Navegación entre vistas |
-| **Framer Motion** | Animaciones y transiciones |
-| **Chart.js / Recharts** | Gráficas de avance |
-| **Lucide React** | Sistema de iconos |
-| **Google Fonts (Nunito)** | Tipografía principal |
-| **OpenDyslexic** (CDN) | Tipografía para ejercicios |
+| Tecnología | Versión | Uso |
+|-----------|---------|-----|
+| React | 19 | Framework principal SPA |
+| Vite | 6 | Bundler y servidor de desarrollo |
+| React Router | 7 | Navegación entre páginas |
+| CSS Variables | — | Sistema de diseño (tokens) |
 
-### Backend (Recomendado)
-| Tecnología | Rol |
-|-----------|-----|
-| **Node.js + Express** | API REST |
-| **MySQL / PostgreSQL** | Base de datos relacional |
-| **JWT + bcrypt** | Autenticación segura |
-| **Nodemailer** | Correos de verificación y recuperación |
-| **PDFKit / Puppeteer** | Generación de reportes PDF |
-| **Multer** | Carga de imágenes (fotos de perfil) |
+### Backend
+| Tecnología | Versión | Uso |
+|-----------|---------|-----|
+| Node.js | 18+ | Runtime del servidor |
+| Express | 4 | Framework HTTP / API REST |
+| MySQL2 | — | Driver de base de datos |
+| bcrypt | — | Hash de contraseñas |
+| jsonwebtoken | — | Tokens JWT para sesiones |
+| google-auth-library | — | Verificación de tokens Google OAuth |
+| dotenv | — | Variables de entorno |
+| helmet | — | Cabeceras HTTP de seguridad |
+| cors | — | Permitir peticiones del frontend |
 
-### Hosting Sugerido
-| Servicio | Uso |
-|---------|-----|
-| **Vercel / Netlify** | Frontend React |
-| **Railway / Render** | Backend Node.js |
-| **PlanetScale / Supabase** | Base de datos en la nube |
-| **Cloudinary** | Almacenamiento de imágenes |
+### Base de Datos
+| Tecnología | Uso |
+|-----------|-----|
+| MySQL 8 (XAMPP) | Almacenamiento principal |
 
 ---
 
-## 📁 Estructura de Archivos
+## 📁 Estructura del Proyecto
 
 ```
 dislap_app/
-├── public/
-│   ├── favicon.ico
-│   ├── logo-disslapp.svg
-│   └── fonts/
-│       └── OpenDyslexic-Regular.woff2
-├── src/
-│   ├── assets/
-│   │   ├── images/
-│   │   ├── illustrations/
-│   │   └── icons/
-│   ├── components/
-│   │   ├── common/          # Navbar, Footer, Button, Card, Modal
-│   │   ├── auth/            # LoginForm, RegisterForm
-│   │   ├── dashboard/       # StatsCard, ProgressMap, StreakBadge
-│   │   ├── games/           # GameCard, GamePlayer, ResultsScreen
-│   │   ├── achievements/    # BadgeCard, AchievementModal, XPBar
-│   │   └── charts/          # ProgressChart, SkillsRadar
-│   ├── pages/
-│   │   ├── LandingPage.jsx
-│   │   ├── LoginPage.jsx
-│   │   ├── PatientDashboard.jsx
-│   │   ├── GamesSection.jsx
-│   │   ├── LevelsMap.jsx
-│   │   ├── ProgressPage.jsx
-│   │   ├── PsychologistPanel.jsx
-│   │   ├── DoctorPage.jsx
-│   │   └── AboutPage.jsx
-│   ├── context/             # AuthContext, PatientContext
-│   ├── hooks/               # useAuth, useProgress, useAchievements
-│   ├── services/            # api.js, auth.service.js
-│   ├── styles/
-│   │   ├── index.css        # Design tokens + global styles
-│   │   └── animations.css   # Keyframes y micro-animaciones
-│   ├── utils/               # helpers, xpCalculator, dateUtils
-│   ├── App.jsx
-│   └── main.jsx
-├── backend/
+├── backend/                      # API REST (Node.js + Express)
+│   ├── config/
+│   │   └── db.js                 # Pool de conexiones MySQL
 │   ├── controllers/
-│   ├── routes/
-│   ├── models/
+│   │   ├── authController.js     # Login, registro, Google OAuth, /me
+│   │   ├── gameController.js     # Guardar sesiones, obtener progreso
+│   │   ├── doctorController.js   # Lista de pacientes, detalle por paciente
+│   │   └── paymentsController.js # Suscripciones y planes
 │   ├── middleware/
+│   │   ├── auth.js               # Verificación de JWT (verifyToken)
+│   │   └── errorHandler.js       # Manejo global de errores
+│   ├── routes/
+│   │   ├── auth.routes.js        # /api/auth/*
+│   │   ├── game.routes.js        # /api/games/*
+│   │   ├── doctor.routes.js      # /api/doctor/*
+│   │   └── payments.routes.js    # /api/payments/*
+│   ├── seeds/
+│   │   └── seed.js               # Crea la BD y carga datos de prueba
+│   ├── database.sql              # Esquema completo de la BD
+│   ├── server.js                 # Punto de entrada del backend
+│   ├── .env                      # Variables de entorno (no subir a git)
+│   └── .env.example              # Plantilla de variables
+│
+├── src/                          # Frontend React
+│   ├── assets/
+│   │   └── css/                  # Hojas de estilo por sección
+│   │       ├── index.css         # Tokens de diseño globales (colores, tipografía, espaciado)
+│   │       ├── animations.css    # Keyframes y clases de animación
+│   │       ├── navbar.css        # Estilos de la barra de navegación
+│   │       ├── footer.css        # Estilos del footer
+│   │       ├── auth.css          # Login y registro
+│   │       ├── dashboard.css     # Dashboard del paciente
+│   │       ├── games.css         # Catálogo y pantalla de juego
+│   │       ├── levels.css        # Mapa de niveles
+│   │       ├── progress.css      # Página de avances y logros
+│   │       ├── doctor-panel.css  # Panel de control del psicólogo
+│   │       ├── doctor.css        # Página "Sobre la Doctora"
+│   │       ├── landing.css       # Landing page
+│   │       ├── about.css         # Página "Nosotros"
+│   │       └── pricing.css       # Página de precios
+│   ├── components/
+│   │   ├── Navbar.jsx            # Barra de navegación con menú de usuario
+│   │   ├── Footer.jsx            # Footer del sitio
+│   │   └── ConfettiCanvas.jsx    # Efecto de confetti al ganar logros
+│   ├── context/
+│   │   └── AuthContext.jsx       # Estado global: usuario, sesión, juegos, XP
+│   ├── hooks/
+│   │   └── useAuth.js            # Hook para consumir AuthContext
+│   ├── pages/
+│   │   ├── LandingPage.jsx       # Página principal (/)
+│   │   ├── LoginPage.jsx         # Login + registro de psicólogos (/login)
+│   │   ├── DashboardPage.jsx     # Dashboard del paciente (/dashboard)
+│   │   ├── GamesPage.jsx         # Catálogo y motor de juegos (/juegos)
+│   │   ├── LevelsPage.jsx        # Mapa de niveles (/niveles)
+│   │   ├── ProgressPage.jsx      # Avances y logros (/avances)
+│   │   ├── DoctorPanelPage.jsx   # Panel del psicólogo (/panel-doctor)
+│   │   ├── DoctorPage.jsx        # Perfil de la doctora (/doctora)
+│   │   ├── AboutPage.jsx         # Sobre nosotros (/nosotros)
+│   │   └── PricingPage.jsx       # Precios (/precios)
 │   ├── services/
-│   └── server.js
-├── .env.example
-├── package.json
-└── README.md
+│   │   └── api.js                # Funciones fetch hacia /api (authAPI, gamesAPI, paymentsAPI)
+│   ├── utils/
+│   │   ├── confetti.js           # Lanzador de confetti
+│   │   └── xpCalculator.js       # Cálculo de XP y nivel siguiente
+│   ├── App.jsx                   # Router principal + layout
+│   └── main.jsx                  # Punto de entrada React
+│
+├── _backup_vanilla/              # Prototipo original en JS/HTML puro (referencia)
+├── public/                       # Archivos estáticos
+├── vite.config.js                # Config de Vite (proxy /api → localhost:3001)
+├── package.json                  # Dependencias del frontend
+└── README.md                     # Este archivo
 ```
 
 ---
 
-## ♿ Consideraciones de Accesibilidad
+## ⚙️ Instalación y Configuración
 
-> La plataforma debe ser especialmente accesible dado el perfil de los usuarios.
+### Requisitos previos
+- Node.js 18+
+- XAMPP con MySQL corriendo en el puerto 3306
 
-- **Tipografía para dislexia**: Opción de cambiar a `OpenDyslexic` en toda la plataforma desde configuración
-- **Tamaño de fuente ajustable**: Control deslizante de tamaño de texto
-- **Alto contraste**: Modo de alto contraste disponible
-- **Texto a voz**: Las instrucciones de los juegos deben poder escucharse (Web Speech API)
-- **Espaciado amplio**: `line-height` mínimo de 1.8, `letter-spacing` ajustable
-- **Evitar saturación**: No usar patrones visuales complejos en fondos de juegos
-- **Navegación por teclado**: Todos los controles accesibles sin ratón
-- **WCAG 2.1 AA**: Cumplimiento de estándar internacional de accesibilidad
-- **Modo oscuro / claro**: Toggle disponible en la barra de navegación
-- **Sin tiempo límite por defecto**: Los temporizadores de juegos son opcionales
+### 1. Clonar el repositorio
 
----
+```bash
+git clone https://github.com/joeliogit/dislap_app.git
+cd dislap_app
+```
 
-## 🗺️ Roadmap de Implementación
+### 2. Instalar dependencias del frontend
 
-### Fase 1 — Fundación (Semanas 1–3)
-- [ ] Setup del proyecto (Vite + React)
-- [ ] Sistema de diseño global (CSS tokens, tipografía, colores)
-- [ ] Componentes base (Navbar, Footer, Button, Card, Modal)
-- [ ] Landing Page completa
-- [ ] Páginas de Login y Registro (UI)
-- [ ] Backend: setup inicial, modelos de BD, auth con JWT
+```bash
+npm install
+```
 
-### Fase 2 — Core del Paciente (Semanas 4–6)
-- [ ] Dashboard del Paciente
-- [ ] Catálogo de Juegos (UI)
-- [ ] Primeros 3 juegos funcionales (Letras Saltarinas, El Espejo, Construye la Palabra)
-- [ ] Mapa de Niveles
-- [ ] Sistema de XP y progreso básico
+### 3. Instalar dependencias del backend
 
-### Fase 3 — Avances y Logros (Semanas 7–9)
-- [ ] Sistema de logros completo (30+ badges)
-- [ ] Gráficas de avance (Chart.js / Recharts)
-- [ ] Racha diaria
-- [ ] Animaciones de celebración (confetti, modales)
-- [ ] Historial de sesiones
+```bash
+cd backend
+npm install
+```
 
-### Fase 4 — Panel del Psicólogo (Semanas 10–12)
-- [ ] Dashboard del psicólogo
-- [ ] CRUD completo de pacientes
-- [ ] Asignación de tratamientos
-- [ ] Generación de reportes PDF
-- [ ] Sistema de notas para pacientes
+### 4. Configurar variables de entorno
 
-### Fase 5 — Páginas Institucionales y Polish (Semanas 13–14)
-- [ ] Página "Sobre la Doctora"
-- [ ] Página "Sobre Nosotros"
-- [ ] Juegos adicionales (4 restantes)
-- [ ] Accesibilidad completa (OpenDyslexic toggle, TTS, alto contraste)
-- [ ] Pruebas con usuarios reales
-- [ ] Optimización de rendimiento y SEO
+Crea el archivo `backend/.env` basado en `backend/.env.example`:
 
-### Fase 6 — Lanzamiento (Semana 15)
-- [ ] Deploy en producción (Vercel + Railway)
-- [ ] Dominio personalizado
-- [ ] SSL, seguridad final
-- [ ] Documentación de usuario / manual del psicólogo
-- [ ] Analytics básico (Umami o Plausible, respetando privacidad)
+```env
+GOOGLE_CLIENT_ID=tu_google_client_id
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=disslapp
+JWT_SECRET=clave_secreta_aqui
+PORT=3001
+```
 
----
+### 5. Crear la base de datos y cargar datos de prueba
 
-## 📞 Contacto y Colaboración
+```bash
+cd backend
+node seeds/seed.js
+```
 
-Para preguntas sobre el plan de implementación o decisiones técnicas, contactar al equipo de desarrollo de **Disslapp**.
+Esto ejecuta `database.sql` automáticamente y crea usuarios, juegos y logros de prueba.
+
+### 6. Iniciar los servidores
+
+**Backend** (puerto 3001):
+```bash
+cd backend
+node server.js
+```
+
+**Frontend** (puerto 5173):
+```bash
+# desde la raíz del proyecto
+npm run dev
+```
+
+La app estará disponible en `http://localhost:5173`. Las peticiones a `/api` se proxean automáticamente al backend en el puerto 3001.
 
 ---
 
-*Documento creado por el equipo técnico de Disslapp — Versión 1.0 — Abril 2026*
+## 🗄️ Base de Datos
+
+### Esquema — `database.sql`
+
+#### Tabla `users`
+Almacena tanto pacientes como psicólogos en una sola tabla diferenciada por el campo `role`.
+
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
+| `id` | INT PK | ID autoincremental |
+| `name` | VARCHAR(100) | Nombre completo |
+| `email` | VARCHAR(255) | Correo único |
+| `password_hash` | VARCHAR(255) | Contraseña hasheada con bcrypt (NULL si usa OAuth) |
+| `role` | ENUM | `patient` o `psychologist` |
+| `patient_code` | VARCHAR(20) | Código único del paciente (ej. PAC-001) |
+| `xp` | INT | Puntos de experiencia acumulados |
+| `level` | INT | Nivel actual (1–6) |
+| `level_name` | VARCHAR(50) | Nombre del nivel (Explorador, Aventurero, etc.) |
+| `streak` | INT | Días consecutivos de actividad |
+| `avatar` | VARCHAR(10) | Emoji o inicial del avatar |
+| `total_sessions` | INT | Total de sesiones completadas |
+| `total_games_played` | INT | Total de juegos jugados |
+| `oauth_id` | VARCHAR(255) | ID de Google (si inició con OAuth) |
+| `oauth_provider` | VARCHAR(50) | `google` o NULL |
+| `last_login_date` | DATE | Último día de acceso (para calcular racha) |
+| `subscription_plan` | ENUM | `free`, `pro`, `premium` |
+| `created_at` | TIMESTAMP | Fecha de registro |
+
+#### Tabla `games`
+Catálogo de juegos disponibles en la plataforma.
+
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
+| `id` | INT PK | ID del juego |
+| `name` | VARCHAR(100) | Nombre del juego |
+| `emoji` | VARCHAR(10) | Emoji representativo |
+| `description` | TEXT | Descripción breve |
+| `skill` | VARCHAR(100) | Habilidad que trabaja |
+| `level_required` | INT | Nivel mínimo requerido |
+| `type` | VARCHAR(50) | Tipo de mecánica del juego |
+| `max_stars` | INT | Máximo de estrellas obtenibles |
+| `is_recommended` | BOOLEAN | Si está marcado como recomendado |
+
+#### Tabla `game_sessions`
+Registro de cada partida completada por un paciente.
+
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
+| `id` | INT PK | ID de la sesión |
+| `user_id` | INT FK | Referencia al usuario |
+| `game_id` | INT FK | Referencia al juego |
+| `score` | INT | Puntuación obtenida |
+| `stars` | INT | Estrellas obtenidas (0–3) |
+| `xp_earned` | INT | XP ganada en esta sesión |
+| `completed` | BOOLEAN | Si el juego fue completado |
+| `duration_seconds` | INT | Tiempo que tardó en completarlo (cronómetro oculto) |
+| `played_at` | TIMESTAMP | Fecha y hora de la partida |
+
+#### Tabla `achievements`
+Catálogo de logros disponibles en el sistema.
+
+#### Tabla `user_achievements`
+Relación de qué logros ha desbloqueado cada usuario.
+
+---
+
+## 🔌 Backend — API REST
+
+El servidor Express corre en el puerto **3001**.
+
+### Endpoints de Autenticación — `/api/auth`
+
+| Método | Ruta | Descripción | Auth |
+|--------|------|-------------|------|
+| POST | `/api/auth/login` | Login con usuario/contraseña. Acepta correo (psicólogos) o nombre/código (pacientes) | No |
+| POST | `/api/auth/register` | Registro de nuevo psicólogo | No |
+| POST | `/api/auth/google` | Login con token de Google Identity Services | No |
+| GET | `/api/auth/me` | Obtener datos del usuario autenticado | JWT |
+
+**`POST /api/auth/login`** — Body:
+```json
+{ "username": "doctora@clinica.com", "password": "dislexia123", "role": "psychologist" }
+```
+
+**`POST /api/auth/register`** — Body:
+```json
+{ "name": "Dr. Juan", "email": "juan@clinica.com", "password": "mi_password" }
+```
+
+**`POST /api/auth/google`** — Body:
+```json
+{ "credential": "<id_token de Google>" }
+```
+
+Todos los endpoints de login retornan:
+```json
+{ "success": true, "token": "<JWT>", "user": { ... } }
+```
+
+---
+
+### Endpoints de Juegos — `/api/games`
+
+Todos requieren JWT en el header `Authorization: Bearer <token>`.
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| POST | `/api/games/session` | Guardar una sesión de juego completada |
+| GET | `/api/games/sessions` | Obtener las últimas 50 sesiones del usuario |
+| GET | `/api/games/progress` | Obtener progreso completo (XP semanal, juegos completados, tiempos) |
+
+**`POST /api/games/session`** — Body:
+```json
+{
+  "gameId": 1,
+  "score": 150,
+  "stars": 3,
+  "xpEarned": 75,
+  "completed": true,
+  "durationSeconds": 45
+}
+```
+
+Al guardar una sesión completada, el backend:
+1. Inserta el registro en `game_sessions`
+2. Suma el XP al usuario en `users`
+3. Recalcula el nivel del usuario según el nuevo XP total
+
+---
+
+### Endpoints del Doctor — `/api/doctor`
+
+Requieren JWT **y** que el usuario tenga `role = 'psychologist'`. Si un paciente intenta acceder, recibe HTTP 403.
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/doctor/patients` | Lista todos los pacientes con sus estadísticas |
+| GET | `/api/doctor/patients/:id` | Detalle completo de un paciente |
+
+**`GET /api/doctor/patients/:id`** retorna:
+```json
+{
+  "patient": { ... },
+  "sessions": [ ... ],          // Últimas 30 sesiones
+  "completedGames": [ ... ],    // Juegos completados con estrellas y tiempo promedio
+  "weeklyXP": [ ... ],          // XP por día en las últimas 2 semanas
+  "skillTimes": [ ... ]         // Tiempo promedio de respuesta por habilidad
+}
+```
+
+---
+
+### Middleware
+
+#### `middleware/auth.js` — verifyToken
+Extrae y verifica el JWT del header `Authorization`. Si es válido, adjunta `req.user = { id, role, name }`. Si es inválido o no existe, retorna HTTP 401.
+
+#### `middleware/errorHandler.js`
+Captura todos los errores no manejados y retorna una respuesta JSON uniforme con el mensaje de error.
+
+---
+
+## ⚛️ Frontend — React App
+
+### `src/context/AuthContext.jsx`
+Estado global de la aplicación. Provee a todos los componentes:
+
+| Valor | Tipo | Descripción |
+|-------|------|-------------|
+| `user` | Object | Datos del usuario logueado (null si no hay sesión) |
+| `isLoggedIn` | Boolean | Indica si hay sesión activa |
+| `loading` | Boolean | True mientras se verifica el token al cargar |
+| `login(username, password, role)` | Function | Login manual. Si el backend falla, usa modo demo offline |
+| `loginWithGoogle(credential)` | Function | Login con token de Google |
+| `logout()` | Function | Cierra sesión y limpia localStorage |
+| `completeGame(gameId, stars, xp, duration)` | Function | Registra un juego terminado localmente y en el backend |
+| `updateXP(amount)` | Function | Actualiza el XP del usuario en el estado local |
+| `appData` | Object | Datos calculados: juegos con estado, logros, sesiones, XP semanal |
+
+**Estrategia offline-first**: Los datos se guardan en `localStorage` con clave por `userId`. Al iniciar sesión, se hace un `syncProgressFromDB()` que actualiza el estado local con los datos del servidor.
+
+### `src/services/api.js`
+Capa de abstracción para todas las peticiones HTTP al backend. Todas las funciones usan `fetch` apuntando a `/api` (proxeado por Vite).
+
+```js
+authAPI.login(credentials)        // POST /api/auth/login
+authAPI.register(userData)        // POST /api/auth/register
+authAPI.googleLogin(credential)   // POST /api/auth/google
+authAPI.getMe()                   // GET  /api/auth/me
+
+gamesAPI.saveSession(data)        // POST /api/games/session
+gamesAPI.getSessions()            // GET  /api/games/sessions
+gamesAPI.getProgress()            // GET  /api/games/progress
+```
+
+Si el servidor responde 401, limpia el token de localStorage y redirige a `/login` automáticamente.
+
+### `src/App.jsx`
+Define todas las rutas con React Router y envuelve la app en `<AuthProvider>`.
+
+| Ruta | Componente | Acceso |
+|------|-----------|--------|
+| `/` | LandingPage | Público |
+| `/login` | LoginPage | Público |
+| `/dashboard` | DashboardPage | Paciente autenticado |
+| `/juegos` | GamesPage | Autenticado |
+| `/niveles` | LevelsPage | Autenticado |
+| `/avances` | ProgressPage | Autenticado |
+| `/panel-doctor` | DoctorPanelPage | Solo psicólogos |
+| `/doctora` | DoctorPage | Público |
+| `/nosotros` | AboutPage | Público |
+| `/precios` | PricingPage | Público |
+
+---
+
+## 🔐 Autenticación
+
+### Login manual
+El formulario de login tiene dos pestañas: **Paciente** y **Psicólogo**.
+- **Paciente**: busca por nombre o `patient_code` en la BD
+- **Psicólogo**: busca por email + contraseña
+
+### Google OAuth
+Usa [Google Identity Services](https://developers.google.com/identity). El frontend renderiza el botón oficial de Google, que devuelve un `credential` (ID token). Este se envía al backend vía `POST /api/auth/google`, donde se verifica con `google-auth-library`. Si el email no existe en la BD, se crea un nuevo usuario paciente automáticamente.
+
+### Registro de psicólogos
+Disponible en la misma página de login (pestaña "¿Eres profesional?"). El formulario envía nombre, correo y contraseña a `POST /api/auth/register`. La contraseña se hashea con bcrypt antes de guardarse.
+
+### JWT
+El token se guarda en `localStorage` como `disslapp_token`. Caduca en 24 horas. Cada petición protegida lo incluye en el header `Authorization: Bearer <token>`.
+
+### Racha diaria
+En cada login, el backend compara la fecha actual con `last_login_date`. Si fue ayer, incrementa `streak`. Si fue hace 2+ días, la resetea a 1.
+
+---
+
+## 🎮 Sistema de Juegos
+
+### `src/pages/GamesPage.jsx`
+Motor principal de juegos. Maneja el estado de cada minijuego, el cronómetro oculto y la pantalla de resultados.
+
+### Juegos implementados
+
+| ID | Nombre | Tipo | Mecánica |
+|----|--------|------|----------|
+| 1 | Letras Saltarinas | `word-scramble` | El usuario escribe la palabra correcta a partir de letras mezcladas |
+| 2 | El Espejo de Palabras | `word-compare` | El usuario indica si dos palabras son iguales o diferentes |
+| 3 | Construye la Palabra | `syllable-build` | El usuario hace clic en las sílabas en el orden correcto |
+| 4 | El Dado Mágico | `phoneme-dice` | Se muestra una letra; el usuario elige qué palabra empieza con ese fonema |
+| 5 | Colorea la Sílaba | `syllable-color` | Se pregunta qué sílaba ocupa una posición dada en la palabra |
+| 6–24 | Juegos adicionales | `generic` | Bloqueados según tier y plan de suscripción |
+
+### Cronómetro oculto
+Al abrir un juego, se registra `startTimeRef.current = Date.now()`. Al terminar, se calcula `Math.round((Date.now() - startTimeRef.current) / 1000)`. Este valor se guarda en `game_sessions.duration_seconds` y se muestra en la pantalla de resultados. **No es visible durante el juego.**
+
+### Sistema de estrellas
+- 3 estrellas: completado sin errores
+- 2 estrellas: 1 intento fallido
+- 1 estrella: 2+ intentos fallidos
+
+### Desbloqueo por tier
+Los 24 juegos están organizados en 5 tiers de 5 juegos cada uno. Para desbloquear el siguiente tier hay que completar todos los del anterior. El plan de suscripción también limita los tiers accesibles (`free` = 1 tier, `pro` = 3, `premium` = 5).
+
+---
+
+## 🩺 Panel del Doctor
+
+### `src/pages/DoctorPanelPage.jsx`
+Solo accesible para usuarios con `role = 'psychologist'`. Si un paciente intenta entrar, es redirigido a `/dashboard`.
+
+### Funcionalidades
+
+**Vista principal**:
+- Resumen con 4 métricas: total de pacientes, sesiones totales, XP promedio, pacientes con racha activa
+- Buscador de pacientes por nombre o código
+- Grid de tarjetas de paciente con XP, racha, juegos jugados y última sesión
+
+**Modal de detalle del paciente** (3 pestañas):
+
+| Pestaña | Contenido |
+|---------|-----------|
+| **Resumen** | Gráfico de barras de XP por día (últimas 2 semanas) + lista de juegos completados con estrellas, intentos y tiempo promedio |
+| **Historial** | Últimas 30 sesiones con nombre del juego, fecha, estrellas, duración y XP ganada |
+| **Métricas** | Tiempo promedio de respuesta por habilidad (verde <30s, amarillo 30-60s, rojo >60s) — indicador clínico de automatización |
+
+### `backend/controllers/doctorController.js`
+- `getPatients`: consulta todos los usuarios con `role='patient'`, incluye `last_session` como subconsulta
+- `getPatientDetail`: 4 consultas paralelas (sesiones, juegos completados, XP semanal, tiempos por habilidad)
+
+---
+
+## 🏆 Sistema de XP y Niveles
+
+### Niveles del paciente
+
+| XP | Nivel | Nombre |
+|----|-------|--------|
+| 0 – 499 | 1 | Explorador |
+| 500 – 1499 | 2 | Aventurero |
+| 1500 – 3499 | 3 | Constructor |
+| 3500 – 6999 | 4 | Narrador |
+| 7000 – 9999 | 5 | Maestro |
+| 10000+ | 6 | Maestro Disslapp |
+
+La lógica de nivel está duplicada en el frontend (`AuthContext.jsx`) y en el backend (`gameController.js`) para que ambos estén sincronizados.
+
+### Logros automáticos (12 en total)
+
+| ID | Logro | Condición |
+|----|-------|-----------|
+| 1 | Primera Sesión | Completar 1 juego |
+| 2 | Juego Perfecto | Obtener 3 estrellas en 1 juego |
+| 3 | Racha de 3 Días | streak >= 3 |
+| 4 | Explorador Completo | Completar los 5 juegos del Tier 1 |
+| 5 | Racha de 7 Días | streak >= 7 |
+| 6 | Veloz como el Rayo | Completar un juego en < 60 segundos |
+| 7 | Racha de 30 Días | streak >= 30 |
+| 8 | Maestro Constructor | Completar los 5 juegos del Tier 3 |
+| 9 | 5 Perfectos | 3 estrellas en 5 juegos distintos |
+| 10 | Explorador Total | Completar 8 juegos distintos |
+| 11 | MVP Semanal | Asignado manualmente por el psicólogo |
+| 12 | Narrador Experto | Completar los 5 juegos del Tier 4 |
+
+---
+
+## 🔑 Variables de Entorno
+
+Archivo `backend/.env`:
+
+```env
+# Google OAuth
+GOOGLE_CLIENT_ID=111402690615-2kadqma0ep1rc9h77scumkgphrdi1d6e.apps.googleusercontent.com
+
+# Base de datos MySQL
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=disslapp
+
+# JWT
+JWT_SECRET=disslapp_super_secret_key_change_in_production_2026
+JWT_EXPIRES_IN=24h
+
+# Servidor
+PORT=3001
+```
+
+> El archivo `.env` está en `.gitignore` y nunca se sube al repositorio. Usa `.env.example` como plantilla.
+
+---
+
+## 🧪 Credenciales de Prueba
+
+Generadas al correr `node seeds/seed.js`:
+
+| Rol | Usuario | Contraseña |
+|-----|---------|-----------|
+| Psicólogo | `doctora@clinica.com` | `dislexia123` |
+| Paciente | `PAC-001` o `mateo@mail.com` | `dislexia123` |
+| Paciente | `PAC-002` o `sofia@mail.com` | `dislexia123` |
+
+---
+
+## 🎨 Sistema de Diseño
+
+Todos los colores, tipografías y espaciados están definidos como CSS custom properties en `src/assets/css/index.css`:
+
+```css
+--purple-600: #7C3AED;   /* color principal */
+--green-600:  #059669;   /* color de éxito */
+--space-4:    1rem;       /* unidad base de espaciado */
+--radius-md:  12px;       /* bordes redondeados */
+```
+
+Soporte de modo oscuro/claro mediante el atributo `data-theme` en el `<html>`, guardado en `localStorage` como `disslapp_theme`.
+
+---
+
+*Disslapp — Versión 1.0 — Abril 2026*
