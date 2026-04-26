@@ -1,0 +1,235 @@
+/* ============================================
+   DISSLAPP — Patient Dashboard
+   ============================================ */
+
+.dashboard-page {
+    padding-top: calc(var(--navbar-height) + var(--space-8));
+    padding-bottom: var(--space-16);
+}
+
+.dashboard-header {
+    margin-bottom: var(--space-10);
+}
+
+.dashboard-greeting {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+}
+
+.greeting-text h1 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-2);
+}
+
+.greeting-text p {
+    color: var(--text-secondary);
+    font-size: var(--font-size-lg);
+}
+
+.streak-badge {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+    border: 2px solid #F59E0B;
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-xl);
+    animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.streak-badge .streak-fire {
+    font-size: 28px;
+}
+
+.streak-badge .streak-count {
+    font-size: var(--font-size-2xl);
+    font-weight: 900;
+    color: #92400E;
+}
+
+.streak-badge .streak-label {
+    font-size: var(--font-size-xs);
+    color: #92400E;
+    font-weight: 600;
+}
+
+/* Level & XP Bar */
+.level-bar-section {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    margin-bottom: var(--space-8);
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+}
+
+.level-badge-big {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: var(--gradient-btn);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: var(--font-size-2xl);
+    font-weight: 900;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+}
+
+.level-info {
+    flex: 1;
+    min-width: 200px;
+}
+
+.level-info .level-name {
+    font-weight: 800;
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-1);
+}
+
+.level-info .xp-text {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-2);
+}
+
+.level-info .progress-bar {
+    height: 12px;
+}
+
+.level-title-badge {
+    background: var(--green-100);
+    color: var(--green-700);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    font-size: var(--font-size-sm);
+}
+
+/* Quick Actions */
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+    margin-bottom: var(--space-10);
+}
+
+.quick-action-card {
+    padding: var(--space-6);
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.quick-action-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-btn);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.quick-action-card:hover::before {
+    opacity: 0.05;
+}
+
+.quick-action-icon {
+    font-size: 40px;
+    margin-bottom: var(--space-3);
+}
+
+.quick-action-card h3 {
+    font-size: var(--font-size-base);
+    margin-bottom: var(--space-2);
+}
+
+.quick-action-card p {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+/* Today's motivation */
+.motivation-card {
+    background: var(--gradient-accent);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    margin-bottom: var(--space-8);
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    border: 1px solid var(--border-color);
+}
+
+.motivation-icon {
+    font-size: 36px;
+    flex-shrink: 0;
+}
+
+.motivation-text {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    font-style: italic;
+    color: var(--text-primary);
+}
+
+/* Recent achievements */
+.recent-achievements {
+    margin-bottom: var(--space-8);
+}
+
+.recent-achievements h2 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-6);
+}
+
+.achievements-row {
+    display: flex;
+    gap: var(--space-4);
+    overflow-x: auto;
+    padding-bottom: var(--space-4);
+}
+
+.mini-achievement {
+    flex-shrink: 0;
+    width: 130px;
+    text-align: center;
+    padding: var(--space-4);
+}
+
+.mini-achievement .achievement-emoji {
+    font-size: 36px;
+    margin-bottom: var(--space-2);
+}
+
+.mini-achievement .achievement-name {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-greeting {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .level-bar-section {
+        flex-direction: column;
+        text-align: center;
+    }
+}

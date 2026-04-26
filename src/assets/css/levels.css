@@ -1,0 +1,246 @@
+/* ============================================
+   DISSLAPP — Levels Map
+   ============================================ */
+
+.levels-page {
+    padding-top: calc(var(--navbar-height) + var(--space-8));
+    padding-bottom: var(--space-16);
+}
+
+.levels-header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+}
+
+.levels-header h1 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-2);
+}
+
+.levels-header p {
+    color: var(--text-secondary);
+    font-size: var(--font-size-lg);
+}
+
+/* Adventure Map */
+.levels-map {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: var(--space-8) 0;
+}
+
+.levels-path {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--gray-200);
+    transform: translateX(-50%);
+    border-radius: 4px;
+}
+
+.levels-path-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: var(--gradient-btn);
+    border-radius: 4px;
+    transition: height 1s ease;
+}
+
+.level-node {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    margin-bottom: var(--space-12);
+    padding: 0 var(--space-4);
+}
+
+.level-node:nth-child(odd) {
+    flex-direction: row;
+    padding-left: calc(50% + 40px);
+}
+
+.level-node:nth-child(even) {
+    flex-direction: row-reverse;
+    padding-right: calc(50% + 40px);
+    text-align: right;
+}
+
+.level-node-circle {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    z-index: 2;
+    border: 4px solid var(--bg-primary);
+    transition: all var(--transition-base);
+}
+
+.level-node.completed .level-node-circle {
+    background: var(--gradient-btn);
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+}
+
+.level-node.active .level-node-circle {
+    background: var(--gradient-btn);
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+    animation: glowRing 2s ease-in-out infinite;
+}
+
+.level-node.locked .level-node-circle {
+    background: var(--gray-200);
+    color: var(--gray-400);
+}
+
+.level-node-content {
+    flex: 1;
+}
+
+.level-node-content .level-name {
+    font-size: var(--font-size-xl);
+    font-weight: 800;
+    margin-bottom: var(--space-1);
+}
+
+.level-node-content .level-description {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-3);
+}
+
+.level-node-content .level-progress {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.level-node:nth-child(even) .level-progress {
+    justify-content: flex-end;
+}
+
+.level-node-content .progress-bar {
+    max-width: 150px;
+    height: 6px;
+}
+
+.level-percent {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--purple-600);
+}
+
+.level-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+}
+
+.level-status-badge.completed {
+    background: var(--green-100);
+    color: var(--green-700);
+}
+
+.level-status-badge.active {
+    background: var(--purple-100);
+    color: var(--purple-700);
+}
+
+.level-status-badge.locked {
+    background: var(--gray-100);
+    color: var(--gray-500);
+}
+
+/* Level detail card */
+.level-detail-card {
+    max-width: 600px;
+    margin: var(--space-10) auto 0;
+    padding: var(--space-8);
+}
+
+.level-detail-card h3 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.level-games-list {
+    display: grid;
+    gap: var(--space-3);
+}
+
+.level-game-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--bg-primary);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+}
+
+.level-game-item .game-check {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.level-game-item .game-check.done {
+    background: var(--green-100);
+    color: var(--green-600);
+}
+
+.level-game-item .game-check.pending {
+    background: var(--gray-100);
+    color: var(--gray-400);
+}
+
+@media (max-width: 768px) {
+    .level-node:nth-child(odd),
+    .level-node:nth-child(even) {
+        flex-direction: column;
+        padding: 0;
+        padding-top: var(--space-4);
+        text-align: center;
+    }
+
+    .level-node:nth-child(even) .level-progress {
+        justify-content: center;
+    }
+
+    .level-node-circle {
+        position: relative;
+        left: auto;
+        transform: none;
+    }
+
+    .levels-path {
+        display: none;
+    }
+
+    .level-node {
+        margin-bottom: var(--space-6);
+    }
+}
