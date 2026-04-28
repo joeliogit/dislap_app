@@ -12,11 +12,10 @@ dist
 dist-ssr
 *.local
 
-# Environment files — never commit real secrets
+# Environment files
 .env
 .env.local
 .env.*.local
-backend/.env
 
 # Claude Code internal files
 .claude/
