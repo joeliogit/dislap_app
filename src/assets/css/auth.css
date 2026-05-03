@@ -197,6 +197,38 @@
     margin-bottom: var(--space-4);
 }
 
+/* Google fallback button (shown when SDK doesn't load) */
+.btn-google-fallback {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-5);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-family: inherit;
+    margin-bottom: var(--space-4);
+}
+
+.btn-google-fallback:hover {
+    border-color: var(--purple-400);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.btn-google-fallback:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
 /* Auth error message */
 .auth-error {
     background: #FEF2F2;

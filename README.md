@@ -1,10 +1,10 @@
-# 🧠 Disslapp — Plataforma Web para el Tratamiento de la Dislexia
+# Disslapp — Plataforma Web para el Tratamiento de la Dislexia
 
 > Herramienta clínica digital que conecta psicólogos con sus pacientes a través de juegos terapéuticos, seguimiento de avances en tiempo real y un panel de control profesional.
 
 ---
 
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
 1. [Descripción General](#descripción-general)
 2. [Stack Tecnológico](#stack-tecnológico)
@@ -17,12 +17,13 @@
 9. [Sistema de Juegos](#sistema-de-juegos)
 10. [Panel del Doctor](#panel-del-doctor)
 11. [Sistema de XP y Niveles](#sistema-de-xp-y-niveles)
-12. [Variables de Entorno](#variables-de-entorno)
-13. [Credenciales de Prueba](#credenciales-de-prueba)
+12. [Planes y Pagos](#planes-y-pagos)
+13. [Variables de Entorno](#variables-de-entorno)
+14. [Credenciales de Prueba](#credenciales-de-prueba)
 
 ---
 
-## 📖 Descripción General
+## Descripción General
 
 **Disslapp** es una plataforma web terapéutica con dos tipos de usuarios:
 
@@ -31,14 +32,16 @@
 
 ---
 
-## 💻 Stack Tecnológico
+## Stack Tecnológico
 
 ### Frontend
 | Tecnología | Versión | Uso |
 |-----------|---------|-----|
 | React | 19 | Framework principal SPA |
-| Vite | 6 | Bundler y servidor de desarrollo |
+| Vite | 8 | Bundler y servidor de desarrollo |
 | React Router | 7 | Navegación entre páginas |
+| @paypal/react-paypal-js | 9 | Integración de pagos PayPal |
+| lucide-react | 1 | Iconos SVG |
 | CSS Variables | — | Sistema de diseño (tokens) |
 
 ### Backend
@@ -46,106 +49,111 @@
 |-----------|---------|-----|
 | Node.js | 18+ | Runtime del servidor |
 | Express | 4 | Framework HTTP / API REST |
-| MySQL2 | — | Driver de base de datos |
-| bcrypt | — | Hash de contraseñas |
-| jsonwebtoken | — | Tokens JWT para sesiones |
-| google-auth-library | — | Verificación de tokens Google OAuth |
-| dotenv | — | Variables de entorno |
-| helmet | — | Cabeceras HTTP de seguridad |
-| cors | — | Permitir peticiones del frontend |
+| MySQL2 | 3 | Driver de base de datos |
+| bcrypt | 5 | Hash de contraseñas |
+| jsonwebtoken | 9 | Tokens JWT para sesiones |
+| google-auth-library | 10 | Verificación de tokens Google OAuth |
+| stripe | 22 | Procesamiento de pagos con tarjeta |
+| express-rate-limit | 7 | Limitación de tasa de peticiones |
+| express-validator | 7 | Validación de datos en endpoints |
+| helmet | 7 | Cabeceras HTTP de seguridad |
+| cors | 2 | Peticiones cross-origin del frontend |
+| dotenv | 16 | Variables de entorno |
 
 ### Base de Datos
 | Tecnología | Uso |
 |-----------|-----|
-| MySQL 8 (XAMPP) | Almacenamiento principal |
+| MySQL 8 | Almacenamiento principal |
 
 ---
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 dislap_app/
-├── backend/                      # API REST (Node.js + Express)
+├── backend/                        # API REST (Node.js + Express)
 │   ├── config/
-│   │   └── db.js                 # Pool de conexiones MySQL
+│   │   └── db.js                   # Pool de conexiones MySQL
 │   ├── controllers/
-│   │   ├── authController.js     # Login, registro, Google OAuth, /me
-│   │   ├── gameController.js     # Guardar sesiones, obtener progreso
-│   │   ├── doctorController.js   # Lista de pacientes, detalle por paciente
-│   │   └── paymentsController.js # Suscripciones y planes
+│   │   ├── authController.js       # Login, registro, Google OAuth, /me
+│   │   ├── gameController.js       # Guardar sesiones, obtener progreso
+│   │   ├── doctorController.js     # Lista de pacientes, detalle por paciente
+│   │   └── paymentsController.js   # Suscripciones, Stripe y PayPal
 │   ├── middleware/
-│   │   ├── auth.js               # Verificación de JWT (verifyToken)
-│   │   └── errorHandler.js       # Manejo global de errores
+│   │   ├── auth.js                 # Verificación de JWT (verifyToken)
+│   │   └── errorHandler.js         # Manejo global de errores
 │   ├── routes/
-│   │   ├── auth.routes.js        # /api/auth/*
-│   │   ├── game.routes.js        # /api/games/*
-│   │   ├── doctor.routes.js      # /api/doctor/*
-│   │   └── payments.routes.js    # /api/payments/*
+│   │   ├── auth.routes.js          # /api/auth/*
+│   │   ├── game.routes.js          # /api/games/*
+│   │   ├── doctor.routes.js        # /api/doctor/*
+│   │   └── payments.routes.js      # /api/payments/*
 │   ├── seeds/
-│   │   └── seed.js               # Crea la BD y carga datos de prueba
-│   ├── database.sql              # Esquema completo de la BD
-│   ├── server.js                 # Punto de entrada del backend
-│   ├── .env                      # Variables de entorno (no subir a git)
-│   └── .env.example              # Plantilla de variables
+│   │   └── seed.js                 # Crea la BD y carga datos de prueba
+│   ├── database.sql                # Esquema completo de la BD
+│   ├── server.js                   # Punto de entrada del backend
+│   ├── .env                        # Variables de entorno (no subir a git)
+│   └── .env.example                # Plantilla de variables
 │
-├── src/                          # Frontend React
+├── src/                            # Frontend React
 │   ├── assets/
-│   │   └── css/                  # Hojas de estilo por sección
-│   │       ├── index.css         # Tokens de diseño globales (colores, tipografía, espaciado)
-│   │       ├── animations.css    # Keyframes y clases de animación
-│   │       ├── navbar.css        # Estilos de la barra de navegación
-│   │       ├── footer.css        # Estilos del footer
-│   │       ├── auth.css          # Login y registro
-│   │       ├── dashboard.css     # Dashboard del paciente
-│   │       ├── games.css         # Catálogo y pantalla de juego
-│   │       ├── levels.css        # Mapa de niveles
-│   │       ├── progress.css      # Página de avances y logros
-│   │       ├── doctor-panel.css  # Panel de control del psicólogo
-│   │       ├── doctor.css        # Página "Sobre la Doctora"
-│   │       ├── landing.css       # Landing page
-│   │       ├── about.css         # Página "Nosotros"
-│   │       └── pricing.css       # Página de precios
+│   │   └── css/                    # Hojas de estilo por sección
+│   │       ├── index.css           # Tokens de diseño globales
+│   │       ├── animations.css      # Keyframes y clases de animación
+│   │       ├── navbar.css
+│   │       ├── footer.css
+│   │       ├── auth.css
+│   │       ├── dashboard.css
+│   │       ├── games.css
+│   │       ├── levels.css
+│   │       ├── progress.css
+│   │       ├── doctor-panel.css
+│   │       ├── doctor.css
+│   │       ├── landing.css
+│   │       ├── about.css
+│   │       └── pricing.css
 │   ├── components/
-│   │   ├── Navbar.jsx            # Barra de navegación con menú de usuario
-│   │   ├── Footer.jsx            # Footer del sitio
-│   │   └── ConfettiCanvas.jsx    # Efecto de confetti al ganar logros
+│   │   ├── Navbar.jsx
+│   │   ├── Footer.jsx
+│   │   └── ConfettiCanvas.jsx
 │   ├── context/
-│   │   └── AuthContext.jsx       # Estado global: usuario, sesión, juegos, XP
+│   │   └── AuthContext.jsx         # Estado global: usuario, sesión, juegos, XP
 │   ├── hooks/
-│   │   └── useAuth.js            # Hook para consumir AuthContext
+│   │   └── useAuth.js
 │   ├── pages/
-│   │   ├── LandingPage.jsx       # Página principal (/)
-│   │   ├── LoginPage.jsx         # Login + registro de psicólogos (/login)
-│   │   ├── DashboardPage.jsx     # Dashboard del paciente (/dashboard)
-│   │   ├── GamesPage.jsx         # Catálogo y motor de juegos (/juegos)
-│   │   ├── LevelsPage.jsx        # Mapa de niveles (/niveles)
-│   │   ├── ProgressPage.jsx      # Avances y logros (/avances)
-│   │   ├── DoctorPanelPage.jsx   # Panel del psicólogo (/panel-doctor)
-│   │   ├── DoctorPage.jsx        # Perfil de la doctora (/doctora)
-│   │   ├── AboutPage.jsx         # Sobre nosotros (/nosotros)
-│   │   └── PricingPage.jsx       # Precios (/precios)
+│   │   ├── LandingPage.jsx         # / — página principal
+│   │   ├── LoginPage.jsx           # /login
+│   │   ├── DashboardPage.jsx       # /dashboard
+│   │   ├── GamesPage.jsx           # /juegos
+│   │   ├── LevelsPage.jsx          # /niveles
+│   │   ├── ProgressPage.jsx        # /avances
+│   │   ├── DoctorPanelPage.jsx     # /panel-doctor (solo psicólogos)
+│   │   ├── DoctorPage.jsx          # /doctora
+│   │   ├── AboutPage.jsx           # /nosotros
+│   │   └── PricingPage.jsx         # /precios
 │   ├── services/
-│   │   └── api.js                # Funciones fetch hacia /api (authAPI, gamesAPI, paymentsAPI)
+│   │   └── api.js                  # Funciones fetch hacia /api
 │   ├── utils/
-│   │   ├── confetti.js           # Lanzador de confetti
-│   │   └── xpCalculator.js       # Cálculo de XP y nivel siguiente
-│   ├── App.jsx                   # Router principal + layout
-│   └── main.jsx                  # Punto de entrada React
+│   │   ├── confetti.js
+│   │   └── xpCalculator.js
+│   ├── App.jsx                     # Router principal + layout
+│   └── main.jsx                    # Punto de entrada React
 │
-├── _backup_vanilla/              # Prototipo original en JS/HTML puro (referencia)
-├── public/                       # Archivos estáticos
-├── vite.config.js                # Config de Vite (proxy /api → localhost:3001)
-├── package.json                  # Dependencias del frontend
-└── README.md                     # Este archivo
+├── disslapp_react/                 # Copia de trabajo alternativa del frontend
+├── _backup_vanilla/                # Prototipo original en JS/HTML puro (referencia)
+├── public/                         # Archivos estáticos
+├── start-mysql.ps1                 # Script PowerShell para iniciar MySQL sin admin
+├── vite.config.js                  # Config Vite (proxy /api → localhost:3001)
+├── package.json
+└── README.md
 ```
 
 ---
 
-## ⚙️ Instalación y Configuración
+## Instalación y Configuración
 
 ### Requisitos previos
 - Node.js 18+
-- XAMPP con MySQL corriendo en el puerto 3306
+- MySQL 8 corriendo en el puerto 3306
 
 ### 1. Clonar el repositorio
 
@@ -169,16 +177,34 @@ npm install
 
 ### 4. Configurar variables de entorno
 
-Crea el archivo `backend/.env` basado en `backend/.env.example`:
+Crea `backend/.env` a partir de `backend/.env.example` y `frontend/.env` a partir de `.env.example`:
 
 ```env
-GOOGLE_CLIENT_ID=tu_google_client_id
+# backend/.env
 DB_HOST=localhost
+DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=
 DB_NAME=disslapp
-JWT_SECRET=clave_secreta_aqui
+JWT_SECRET=cadena_larga_y_aleatoria
+JWT_EXPIRES_IN=24h
 PORT=3001
+GOOGLE_CLIENT_ID=tu_google_client_id.apps.googleusercontent.com
+STRIPE_SECRET_KEY=
+STRIPE_PUBLISHABLE_KEY=
+STRIPE_WEBHOOK_SECRET=
+STRIPE_PRICE_PRO=
+STRIPE_PRICE_PREMIUM=
+PAYPAL_CLIENT_ID=
+PAYPAL_CLIENT_SECRET=
+PAYPAL_ENV=sandbox
+FRONTEND_URL=http://localhost:5173
+```
+
+```env
+# .env (raíz — frontend)
+VITE_PAYPAL_CLIENT_ID=tu_paypal_client_id
+VITE_STRIPE_PUBLISHABLE_KEY=tu_stripe_publishable_key
 ```
 
 ### 5. Crear la base de datos y cargar datos de prueba
@@ -188,32 +214,38 @@ cd backend
 node seeds/seed.js
 ```
 
-Esto ejecuta `database.sql` automáticamente y crea usuarios, juegos y logros de prueba.
+Esto ejecuta `database.sql` y crea usuarios, juegos y logros de prueba.
 
-### 6. Iniciar los servidores
+### 6. Iniciar MySQL (Windows sin admin)
+
+Si MySQL no está corriendo como servicio, usa el script incluido:
+
+```powershell
+.\start-mysql.ps1
+```
+
+### 7. Iniciar los servidores
 
 **Backend** (puerto 3001):
 ```bash
 cd backend
-node server.js
+npm run dev
 ```
 
 **Frontend** (puerto 5173):
 ```bash
-# desde la raíz del proyecto
 npm run dev
 ```
 
-La app estará disponible en `http://localhost:5173`. Las peticiones a `/api` se proxean automáticamente al backend en el puerto 3001.
+La app estará disponible en `http://localhost:5173`. Las peticiones a `/api` se proxean al backend.
 
 ---
 
-## 🗄️ Base de Datos
+## Base de Datos
 
 ### Esquema — `database.sql`
 
 #### Tabla `users`
-Almacena tanto pacientes como psicólogos en una sola tabla diferenciada por el campo `role`.
 
 | Campo | Tipo | Descripción |
 |-------|------|-------------|
@@ -225,7 +257,7 @@ Almacena tanto pacientes como psicólogos en una sola tabla diferenciada por el 
 | `patient_code` | VARCHAR(20) | Código único del paciente (ej. PAC-001) |
 | `xp` | INT | Puntos de experiencia acumulados |
 | `level` | INT | Nivel actual (1–6) |
-| `level_name` | VARCHAR(50) | Nombre del nivel (Explorador, Aventurero, etc.) |
+| `level_name` | VARCHAR(50) | Nombre del nivel |
 | `streak` | INT | Días consecutivos de actividad |
 | `avatar` | VARCHAR(10) | Emoji o inicial del avatar |
 | `total_sessions` | INT | Total de sesiones completadas |
@@ -234,10 +266,10 @@ Almacena tanto pacientes como psicólogos en una sola tabla diferenciada por el 
 | `oauth_provider` | VARCHAR(50) | `google` o NULL |
 | `last_login_date` | DATE | Último día de acceso (para calcular racha) |
 | `subscription_plan` | ENUM | `free`, `pro`, `premium` |
+| `stripe_customer_id` | VARCHAR(255) | ID de cliente en Stripe |
 | `created_at` | TIMESTAMP | Fecha de registro |
 
 #### Tabla `games`
-Catálogo de juegos disponibles en la plataforma.
 
 | Campo | Tipo | Descripción |
 |-------|------|-------------|
@@ -252,7 +284,6 @@ Catálogo de juegos disponibles en la plataforma.
 | `is_recommended` | BOOLEAN | Si está marcado como recomendado |
 
 #### Tabla `game_sessions`
-Registro de cada partida completada por un paciente.
 
 | Campo | Tipo | Descripción |
 |-------|------|-------------|
@@ -263,41 +294,39 @@ Registro de cada partida completada por un paciente.
 | `stars` | INT | Estrellas obtenidas (0–3) |
 | `xp_earned` | INT | XP ganada en esta sesión |
 | `completed` | BOOLEAN | Si el juego fue completado |
-| `duration_seconds` | INT | Tiempo que tardó en completarlo (cronómetro oculto) |
+| `duration_seconds` | INT | Tiempo en completarlo (cronómetro oculto) |
 | `played_at` | TIMESTAMP | Fecha y hora de la partida |
 
-#### Tabla `achievements`
-Catálogo de logros disponibles en el sistema.
+#### Tablas `achievements` y `user_achievements`
 
-#### Tabla `user_achievements`
-Relación de qué logros ha desbloqueado cada usuario.
+Catálogo de 12 logros e historial de desbloqueos por usuario.
 
 ---
 
-## 🔌 Backend — API REST
+## Backend — API REST
 
 El servidor Express corre en el puerto **3001**.
 
-### Endpoints de Autenticación — `/api/auth`
+### Autenticación — `/api/auth`
 
 | Método | Ruta | Descripción | Auth |
 |--------|------|-------------|------|
-| POST | `/api/auth/login` | Login con usuario/contraseña. Acepta correo (psicólogos) o nombre/código (pacientes) | No |
+| POST | `/api/auth/login` | Login con usuario/contraseña | No |
 | POST | `/api/auth/register` | Registro de nuevo psicólogo | No |
 | POST | `/api/auth/google` | Login con token de Google Identity Services | No |
-| GET | `/api/auth/me` | Obtener datos del usuario autenticado | JWT |
+| GET | `/api/auth/me` | Datos del usuario autenticado | JWT |
 
-**`POST /api/auth/login`** — Body:
+**`POST /api/auth/login`**
 ```json
 { "username": "doctora@clinica.com", "password": "dislexia123", "role": "psychologist" }
 ```
 
-**`POST /api/auth/register`** — Body:
+**`POST /api/auth/register`**
 ```json
 { "name": "Dr. Juan", "email": "juan@clinica.com", "password": "mi_password" }
 ```
 
-**`POST /api/auth/google`** — Body:
+**`POST /api/auth/google`**
 ```json
 { "credential": "<id_token de Google>" }
 ```
@@ -309,17 +338,17 @@ Todos los endpoints de login retornan:
 
 ---
 
-### Endpoints de Juegos — `/api/games`
+### Juegos — `/api/games`
 
-Todos requieren JWT en el header `Authorization: Bearer <token>`.
+Todos requieren `Authorization: Bearer <token>`.
 
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| POST | `/api/games/session` | Guardar una sesión de juego completada |
-| GET | `/api/games/sessions` | Obtener las últimas 50 sesiones del usuario |
-| GET | `/api/games/progress` | Obtener progreso completo (XP semanal, juegos completados, tiempos) |
+| POST | `/api/games/session` | Guardar sesión completada |
+| GET | `/api/games/sessions` | Últimas 50 sesiones del usuario |
+| GET | `/api/games/progress` | XP semanal, juegos completados, tiempos |
 
-**`POST /api/games/session`** — Body:
+**`POST /api/games/session`**
 ```json
 {
   "gameId": 1,
@@ -331,88 +360,100 @@ Todos requieren JWT en el header `Authorization: Bearer <token>`.
 }
 ```
 
-Al guardar una sesión completada, el backend:
-1. Inserta el registro en `game_sessions`
-2. Suma el XP al usuario en `users`
-3. Recalcula el nivel del usuario según el nuevo XP total
+Al guardar una sesión el backend inserta en `game_sessions`, suma XP al usuario y recalcula su nivel.
 
 ---
 
-### Endpoints del Doctor — `/api/doctor`
+### Doctor — `/api/doctor`
 
-Requieren JWT **y** que el usuario tenga `role = 'psychologist'`. Si un paciente intenta acceder, recibe HTTP 403.
+Requieren JWT con `role = 'psychologist'`. Devuelve HTTP 403 a pacientes.
 
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| GET | `/api/doctor/patients` | Lista todos los pacientes con sus estadísticas |
+| GET | `/api/doctor/patients` | Lista de pacientes con estadísticas |
 | GET | `/api/doctor/patients/:id` | Detalle completo de un paciente |
 
 **`GET /api/doctor/patients/:id`** retorna:
 ```json
 {
   "patient": { ... },
-  "sessions": [ ... ],          // Últimas 30 sesiones
-  "completedGames": [ ... ],    // Juegos completados con estrellas y tiempo promedio
-  "weeklyXP": [ ... ],          // XP por día en las últimas 2 semanas
-  "skillTimes": [ ... ]         // Tiempo promedio de respuesta por habilidad
+  "sessions": [ ... ],
+  "completedGames": [ ... ],
+  "weeklyXP": [ ... ],
+  "skillTimes": [ ... ]
 }
 ```
 
 ---
 
-### Middleware
+### Pagos — `/api/payments`
 
-#### `middleware/auth.js` — verifyToken
-Extrae y verifica el JWT del header `Authorization`. Si es válido, adjunta `req.user = { id, role, name }`. Si es inválido o no existe, retorna HTTP 401.
-
-#### `middleware/errorHandler.js`
-Captura todos los errores no manejados y retorna una respuesta JSON uniforme con el mensaje de error.
+| Método | Ruta | Descripción | Auth |
+|--------|------|-------------|------|
+| GET | `/api/payments/plans` | Listado de planes disponibles | No |
+| GET | `/api/payments/subscription` | Suscripción activa del usuario | JWT |
+| POST | `/api/payments/checkout` | Crear sesión de pago con Stripe | JWT |
+| POST | `/api/payments/demo-checkout` | Activar plan de demo sin pago | JWT |
+| POST | `/api/payments/cancel` | Cancelar suscripción activa | JWT |
+| POST | `/api/payments/paypal/create-order` | Crear orden de PayPal | JWT |
+| POST | `/api/payments/paypal/capture-order` | Capturar pago de PayPal | JWT |
+| POST | `/api/payments/webhook` | Webhook de eventos de Stripe | No |
 
 ---
 
-## ⚛️ Frontend — React App
+### Middleware
+
+**`middleware/auth.js` — verifyToken**: extrae y verifica el JWT del header `Authorization`. Adjunta `req.user = { id, role, name }` o devuelve HTTP 401.
+
+**`middleware/errorHandler.js`**: captura errores no manejados y retorna respuesta JSON uniforme.
+
+---
+
+## Frontend — React App
 
 ### `src/context/AuthContext.jsx`
-Estado global de la aplicación. Provee a todos los componentes:
+
+Estado global de la aplicación.
 
 | Valor | Tipo | Descripción |
 |-------|------|-------------|
-| `user` | Object | Datos del usuario logueado (null si no hay sesión) |
+| `user` | Object | Datos del usuario (null si no hay sesión) |
 | `isLoggedIn` | Boolean | Indica si hay sesión activa |
-| `loading` | Boolean | True mientras se verifica el token al cargar |
-| `login(username, password, role)` | Function | Login manual. Si el backend falla, usa modo demo offline |
+| `loading` | Boolean | True mientras se verifica el token |
+| `login(username, password, role)` | Function | Login manual con fallback demo offline |
 | `loginWithGoogle(credential)` | Function | Login con token de Google |
 | `logout()` | Function | Cierra sesión y limpia localStorage |
-| `completeGame(gameId, stars, xp, duration)` | Function | Registra un juego terminado localmente y en el backend |
-| `updateXP(amount)` | Function | Actualiza el XP del usuario en el estado local |
-| `appData` | Object | Datos calculados: juegos con estado, logros, sesiones, XP semanal |
+| `completeGame(gameId, stars, xp, duration)` | Function | Registra juego terminado local y en backend |
+| `updateXP(amount)` | Function | Actualiza XP en el estado local |
+| `appData` | Object | Juegos con estado, logros, sesiones, XP semanal |
 
-**Estrategia offline-first**: Los datos se guardan en `localStorage` con clave por `userId`. Al iniciar sesión, se hace un `syncProgressFromDB()` que actualiza el estado local con los datos del servidor.
+Los datos se guardan en `localStorage` por `userId`. Al iniciar sesión se ejecuta `syncProgressFromDB()`.
 
 ### `src/services/api.js`
-Capa de abstracción para todas las peticiones HTTP al backend. Todas las funciones usan `fetch` apuntando a `/api` (proxeado por Vite).
 
 ```js
-authAPI.login(credentials)        // POST /api/auth/login
-authAPI.register(userData)        // POST /api/auth/register
-authAPI.googleLogin(credential)   // POST /api/auth/google
-authAPI.getMe()                   // GET  /api/auth/me
+authAPI.login(credentials)       // POST /api/auth/login
+authAPI.register(userData)       // POST /api/auth/register
+authAPI.googleLogin(credential)  // POST /api/auth/google
+authAPI.getMe()                  // GET  /api/auth/me
 
-gamesAPI.saveSession(data)        // POST /api/games/session
-gamesAPI.getSessions()            // GET  /api/games/sessions
-gamesAPI.getProgress()            // GET  /api/games/progress
+gamesAPI.saveSession(data)       // POST /api/games/session
+gamesAPI.getSessions()           // GET  /api/games/sessions
+gamesAPI.getProgress()           // GET  /api/games/progress
+
+paymentsAPI.getPlans()           // GET  /api/payments/plans
+paymentsAPI.checkout(planId)     // POST /api/payments/checkout
 ```
 
-Si el servidor responde 401, limpia el token de localStorage y redirige a `/login` automáticamente.
+Ante respuesta 401 limpia el token y redirige a `/login`.
 
-### `src/App.jsx`
-Define todas las rutas con React Router y envuelve la app en `<AuthProvider>`.
+### Rutas — `src/App.jsx`
 
 | Ruta | Componente | Acceso |
 |------|-----------|--------|
 | `/` | LandingPage | Público |
 | `/login` | LoginPage | Público |
-| `/dashboard` | DashboardPage | Paciente autenticado |
+| `/dashboard` | DashboardPage | Autenticado |
 | `/juegos` | GamesPage | Autenticado |
 | `/niveles` | LevelsPage | Autenticado |
 | `/avances` | ProgressPage | Autenticado |
@@ -423,85 +464,72 @@ Define todas las rutas con React Router y envuelve la app en `<AuthProvider>`.
 
 ---
 
-## 🔐 Autenticación
+## Autenticación
 
 ### Login manual
-El formulario de login tiene dos pestañas: **Paciente** y **Psicólogo**.
-- **Paciente**: busca por nombre o `patient_code` en la BD
-- **Psicólogo**: busca por email + contraseña
+Formulario con dos pestañas: **Paciente** (nombre o `patient_code`) y **Psicólogo** (email + contraseña).
 
 ### Google OAuth
-Usa [Google Identity Services](https://developers.google.com/identity). El frontend renderiza el botón oficial de Google, que devuelve un `credential` (ID token). Este se envía al backend vía `POST /api/auth/google`, donde se verifica con `google-auth-library`. Si el email no existe en la BD, se crea un nuevo usuario paciente automáticamente.
+El frontend usa Google Identity Services y envía el `credential` al backend via `POST /api/auth/google`. El backend lo verifica con `google-auth-library`. Si el email no existe, crea un usuario paciente automáticamente.
 
 ### Registro de psicólogos
-Disponible en la misma página de login (pestaña "¿Eres profesional?"). El formulario envía nombre, correo y contraseña a `POST /api/auth/register`. La contraseña se hashea con bcrypt antes de guardarse.
+En la misma página de login, pestaña "¿Eres profesional?". La contraseña se hashea con bcrypt.
 
 ### JWT
-El token se guarda en `localStorage` como `disslapp_token`. Caduca en 24 horas. Cada petición protegida lo incluye en el header `Authorization: Bearer <token>`.
+Token guardado en `localStorage` como `disslapp_token`. Caduca en 24 horas. Se incluye como `Authorization: Bearer <token>` en todas las peticiones protegidas.
 
 ### Racha diaria
-En cada login, el backend compara la fecha actual con `last_login_date`. Si fue ayer, incrementa `streak`. Si fue hace 2+ días, la resetea a 1.
+En cada login, el backend compara la fecha actual con `last_login_date`. Si fue ayer incrementa `streak`; si fue hace 2+ días la resetea a 1.
 
 ---
 
-## 🎮 Sistema de Juegos
+## Sistema de Juegos
 
-### `src/pages/GamesPage.jsx`
-Motor principal de juegos. Maneja el estado de cada minijuego, el cronómetro oculto y la pantalla de resultados.
-
-### Juegos implementados
+### Juegos implementados (Tier 1 — libres)
 
 | ID | Nombre | Tipo | Mecánica |
 |----|--------|------|----------|
-| 1 | Letras Saltarinas | `word-scramble` | El usuario escribe la palabra correcta a partir de letras mezcladas |
-| 2 | El Espejo de Palabras | `word-compare` | El usuario indica si dos palabras son iguales o diferentes |
-| 3 | Construye la Palabra | `syllable-build` | El usuario hace clic en las sílabas en el orden correcto |
-| 4 | El Dado Mágico | `phoneme-dice` | Se muestra una letra; el usuario elige qué palabra empieza con ese fonema |
-| 5 | Colorea la Sílaba | `syllable-color` | Se pregunta qué sílaba ocupa una posición dada en la palabra |
-| 6–24 | Juegos adicionales | `generic` | Bloqueados según tier y plan de suscripción |
+| 1 | Letras Saltarinas | `word-scramble` | Escribir la palabra a partir de letras mezcladas |
+| 2 | El Espejo de Palabras | `word-compare` | Indicar si dos palabras son iguales o diferentes |
+| 3 | Construye la Palabra | `syllable-build` | Hacer clic en las sílabas en el orden correcto |
+| 4 | El Dado Mágico | `phoneme-dice` | Elegir qué palabra empieza con el fonema mostrado |
+| 5 | Colorea la Sílaba | `syllable-color` | Identificar la posición de una sílaba en la palabra |
+
+Los juegos 6–24 están bloqueados por tier y plan de suscripción (`type: "generic"`).
 
 ### Cronómetro oculto
-Al abrir un juego, se registra `startTimeRef.current = Date.now()`. Al terminar, se calcula `Math.round((Date.now() - startTimeRef.current) / 1000)`. Este valor se guarda en `game_sessions.duration_seconds` y se muestra en la pantalla de resultados. **No es visible durante el juego.**
+Se registra `Date.now()` al abrir el juego. Al terminar se calcula `Math.round((Date.now() - start) / 1000)`. No es visible durante el juego; se guarda en `duration_seconds` y aparece en la pantalla de resultados.
 
 ### Sistema de estrellas
-- 3 estrellas: completado sin errores
+- 3 estrellas: sin errores
 - 2 estrellas: 1 intento fallido
 - 1 estrella: 2+ intentos fallidos
 
 ### Desbloqueo por tier
-Los 24 juegos están organizados en 5 tiers de 5 juegos cada uno. Para desbloquear el siguiente tier hay que completar todos los del anterior. El plan de suscripción también limita los tiers accesibles (`free` = 1 tier, `pro` = 3, `premium` = 5).
+24 juegos en 5 tiers de 5 cada uno. Hay que completar todos los juegos de un tier para desbloquear el siguiente. El plan de suscripción limita los tiers accesibles.
 
 ---
 
-## 🩺 Panel del Doctor
+## Panel del Doctor
 
-### `src/pages/DoctorPanelPage.jsx`
-Solo accesible para usuarios con `role = 'psychologist'`. Si un paciente intenta entrar, es redirigido a `/dashboard`.
-
-### Funcionalidades
+Solo accesible con `role = 'psychologist'`. Pacientes son redirigidos a `/dashboard`.
 
 **Vista principal**:
-- Resumen con 4 métricas: total de pacientes, sesiones totales, XP promedio, pacientes con racha activa
-- Buscador de pacientes por nombre o código
-- Grid de tarjetas de paciente con XP, racha, juegos jugados y última sesión
+- Métricas globales: total pacientes, sesiones, XP promedio, rachas activas
+- Buscador por nombre o código
+- Grid de tarjetas con XP, racha, juegos jugados y última sesión
 
-**Modal de detalle del paciente** (3 pestañas):
+**Modal de detalle** (3 pestañas):
 
 | Pestaña | Contenido |
 |---------|-----------|
-| **Resumen** | Gráfico de barras de XP por día (últimas 2 semanas) + lista de juegos completados con estrellas, intentos y tiempo promedio |
-| **Historial** | Últimas 30 sesiones con nombre del juego, fecha, estrellas, duración y XP ganada |
-| **Métricas** | Tiempo promedio de respuesta por habilidad (verde <30s, amarillo 30-60s, rojo >60s) — indicador clínico de automatización |
-
-### `backend/controllers/doctorController.js`
-- `getPatients`: consulta todos los usuarios con `role='patient'`, incluye `last_session` como subconsulta
-- `getPatientDetail`: 4 consultas paralelas (sesiones, juegos completados, XP semanal, tiempos por habilidad)
+| Resumen | Gráfico de barras de XP por día (2 semanas) + juegos completados con estrellas y tiempo promedio |
+| Historial | Últimas 30 sesiones con juego, fecha, estrellas, duración y XP |
+| Métricas | Tiempo promedio por habilidad: verde (<30s), amarillo (30–60s), rojo (>60s) |
 
 ---
 
-## 🏆 Sistema de XP y Niveles
-
-### Niveles del paciente
+## Sistema de XP y Niveles
 
 | XP | Nivel | Nombre |
 |----|-------|--------|
@@ -512,54 +540,76 @@ Solo accesible para usuarios con `role = 'psychologist'`. Si un paciente intenta
 | 7000 – 9999 | 5 | Maestro |
 | 10000+ | 6 | Maestro Disslapp |
 
-La lógica de nivel está duplicada en el frontend (`AuthContext.jsx`) y en el backend (`gameController.js`) para que ambos estén sincronizados.
+La lógica de nivel está duplicada en `AuthContext.jsx` y en `gameController.js` para mantener sincronía frontend/backend.
 
 ### Logros automáticos (12 en total)
 
 | ID | Logro | Condición |
 |----|-------|-----------|
 | 1 | Primera Sesión | Completar 1 juego |
-| 2 | Juego Perfecto | Obtener 3 estrellas en 1 juego |
+| 2 | Juego Perfecto | 3 estrellas en 1 juego |
 | 3 | Racha de 3 Días | streak >= 3 |
-| 4 | Explorador Completo | Completar los 5 juegos del Tier 1 |
+| 4 | Explorador Completo | 5 juegos del Tier 1 |
 | 5 | Racha de 7 Días | streak >= 7 |
-| 6 | Veloz como el Rayo | Completar un juego en < 60 segundos |
+| 6 | Veloz como el Rayo | Completar en < 60 segundos |
 | 7 | Racha de 30 Días | streak >= 30 |
-| 8 | Maestro Constructor | Completar los 5 juegos del Tier 3 |
+| 8 | Maestro Constructor | 5 juegos del Tier 3 |
 | 9 | 5 Perfectos | 3 estrellas en 5 juegos distintos |
-| 10 | Explorador Total | Completar 8 juegos distintos |
-| 11 | MVP Semanal | Asignado manualmente por el psicólogo |
-| 12 | Narrador Experto | Completar los 5 juegos del Tier 4 |
+| 10 | Explorador Total | 8 juegos distintos completados |
+| 11 | MVP Semanal | Asignado manualmente por psicólogo |
+| 12 | Narrador Experto | 5 juegos del Tier 4 |
 
 ---
 
-## 🔑 Variables de Entorno
+## Planes y Pagos
 
-Archivo `backend/.env`:
+| Plan | Precio | Tiers | Pacientes | Características |
+|------|--------|-------|-----------|-----------------|
+| Free | $0 | 1 | 1 | 5 juegos, logros básicos |
+| Pro | $9.99/mes | 3 | 10 | 15 juegos, reportes, email support |
+| Premium | $24.99/mes | 5 | Ilimitados | 24 juegos, análisis avanzados, soporte 24/7 |
+
+**Integraciones**:
+- **Stripe**: checkout sessions, webhooks para eventos de suscripción
+- **PayPal**: crear y capturar órdenes via PayPal REST API
+
+---
+
+## Variables de Entorno
+
+### `backend/.env`
 
 ```env
-# Google OAuth
-GOOGLE_CLIENT_ID=111402690615-2kadqma0ep1rc9h77scumkgphrdi1d6e.apps.googleusercontent.com
-
-# Base de datos MySQL
 DB_HOST=localhost
+DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=
 DB_NAME=disslapp
-
-# JWT
-JWT_SECRET=disslapp_super_secret_key_change_in_production_2026
+JWT_SECRET=cadena_larga_y_aleatoria
 JWT_EXPIRES_IN=24h
-
-# Servidor
 PORT=3001
+GOOGLE_CLIENT_ID=tu_google_client_id.apps.googleusercontent.com
+STRIPE_SECRET_KEY=
+STRIPE_PUBLISHABLE_KEY=
+STRIPE_WEBHOOK_SECRET=
+STRIPE_PRICE_PRO=
+STRIPE_PRICE_PREMIUM=
+PAYPAL_CLIENT_ID=
+PAYPAL_CLIENT_SECRET=
+PAYPAL_ENV=sandbox
+FRONTEND_URL=http://localhost:5173
 ```
 
-> El archivo `.env` está en `.gitignore` y nunca se sube al repositorio. Usa `.env.example` como plantilla.
+### `.env` (raíz — frontend)
+
+```env
+VITE_PAYPAL_CLIENT_ID=tu_paypal_client_id
+VITE_STRIPE_PUBLISHABLE_KEY=tu_stripe_publishable_key
+```
 
 ---
 
-## 🧪 Credenciales de Prueba
+## Credenciales de Prueba
 
 Generadas al correr `node seeds/seed.js`:
 
@@ -571,19 +621,19 @@ Generadas al correr `node seeds/seed.js`:
 
 ---
 
-## 🎨 Sistema de Diseño
+## Sistema de Diseño
 
-Todos los colores, tipografías y espaciados están definidos como CSS custom properties en `src/assets/css/index.css`:
+Tokens definidos en `src/assets/css/index.css`:
 
 ```css
 --purple-600: #7C3AED;   /* color principal */
---green-600:  #059669;   /* color de éxito */
+--green-600:  #059669;   /* éxito */
 --space-4:    1rem;       /* unidad base de espaciado */
 --radius-md:  12px;       /* bordes redondeados */
 ```
 
-Soporte de modo oscuro/claro mediante el atributo `data-theme` en el `<html>`, guardado en `localStorage` como `disslapp_theme`.
+Modo oscuro/claro via atributo `data-theme` en `<html>`, guardado en `localStorage` como `disslapp_theme`.
 
 ---
 
-*Disslapp — Versión 1.0 — Abril 2026*
+*Disslapp — Versión 1.0 — Mayo 2026*

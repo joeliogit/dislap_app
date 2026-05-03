@@ -20,11 +20,11 @@ const ALL_GAMES = [
   { id: 4,  name: 'El Dado Mágico',        emoji: '🎲', description: 'Lanza el dado y encuentra palabras que empiezan con ese fonema.',      skill: 'Conciencia fonémica',   level: 1, maxStars: 3, recommended: false, type: 'phoneme-dice' },
   { id: 5,  name: 'Colorea la Sílaba',     emoji: '🎨', description: 'Identifica la sílaba correcta según su posición en la palabra.',       skill: 'Segmentación silábica', level: 1, maxStars: 3, recommended: false, type: 'syllable-color' },
   // Tier 2
-  { id: 6,  name: 'Rima y Encuentra',      emoji: '🎵', description: 'Selecciona la imagen que rima con la palabra mostrada.',              skill: 'Rima y fonología',      level: 2, maxStars: 3, recommended: false, type: 'generic' },
-  { id: 7,  name: 'El Laberinto de Letras',emoji: '🏰', description: 'Navega el laberinto encontrando las letras en el orden correcto.',    skill: 'Memoria y secuencia',   level: 2, maxStars: 3, recommended: false, type: 'generic' },
-  { id: 8,  name: 'Palabras Escondidas',   emoji: '🔍', description: 'Encuentra las palabras ocultas en la sopa de letras.',               skill: 'Reconocimiento visual', level: 2, maxStars: 3, recommended: false, type: 'generic' },
-  { id: 9,  name: 'La Cadena de Sílabas',  emoji: '🔗', description: 'Encadena sílabas para formar palabras completas.',                   skill: 'Segmentación silábica', level: 2, maxStars: 3, recommended: false, type: 'generic' },
-  { id: 10, name: 'El Contador de Sonidos',emoji: '🎤', description: 'Cuenta cuántos sonidos tiene cada palabra.',                         skill: 'Conciencia fonémica',   level: 2, maxStars: 3, recommended: false, type: 'generic' },
+  { id: 6,  name: 'Rima y Encuentra',      emoji: '🎵', description: 'Selecciona la palabra que rima con la mostrada.',                    skill: 'Rima y fonología',      level: 2, maxStars: 3, recommended: false, type: 'rhyme-match'    },
+  { id: 7,  name: 'El Laberinto de Letras',emoji: '🏰', description: 'Memoriza las letras y escríbelas en el orden correcto.',             skill: 'Memoria y secuencia',   level: 2, maxStars: 3, recommended: false, type: 'memory-letters' },
+  { id: 8,  name: 'Palabras Escondidas',   emoji: '🔍', description: 'Descubre la letra oculta para completar la palabra.',                skill: 'Reconocimiento visual', level: 2, maxStars: 3, recommended: false, type: 'word-fill'      },
+  { id: 9,  name: 'La Cadena de Sílabas',  emoji: '🔗', description: 'La última sílaba de una palabra es la primera de la siguiente.',     skill: 'Segmentación silábica', level: 2, maxStars: 3, recommended: false, type: 'syllable-chain' },
+  { id: 10, name: 'El Contador de Sonidos',emoji: '🎤', description: 'Cuenta cuántas sílabas tiene cada palabra.',                        skill: 'Conciencia fonémica',   level: 2, maxStars: 3, recommended: false, type: 'sound-count'    },
   // Tier 3
   { id: 11, name: 'Lectura Veloz',         emoji: '⚡', description: 'Lee el párrafo y responde las preguntas de comprensión a tiempo.',   skill: 'Comprensión lectora',   level: 3, maxStars: 3, recommended: false, type: 'generic' },
   { id: 12, name: 'La Fábrica de Palabras',emoji: '🏭', description: 'Combina prefijos y sufijos para crear nuevas palabras.',             skill: 'Morfología',             level: 3, maxStars: 3, recommended: false, type: 'generic' },
@@ -132,6 +132,76 @@ const STATIC_DATA = {
     { letter: 'N', correct: ['NUBE', 'NIDO', 'NABO'], wrong: ['LATA', 'BESO', 'FOCA'] },
     { letter: 'F', correct: ['FOCA', 'FARO', 'FULA'], wrong: ['MANO', 'TORO', 'SOPA'] },
     { letter: 'D', correct: ['DADO', 'DEDO', 'DAMA'], wrong: ['GATO', 'POLO', 'ROCA'] },
+  ],
+  rhymeData: [
+    { word: 'GATO',  options: ['PATO', 'LUNA', 'MESA'],   correct: 'PATO'  },
+    { word: 'CASA',  options: ['ROCA', 'PASA', 'TORO'],   correct: 'PASA'  },
+    { word: 'LUNA',  options: ['CUNA', 'PATO', 'DADO'],   correct: 'CUNA'  },
+    { word: 'BOLA',  options: ['NUBE', 'COLA', 'ROCA'],   correct: 'COLA'  },
+    { word: 'TORO',  options: ['LORO', 'MANO', 'PERA'],   correct: 'LORO'  },
+    { word: 'MESA',  options: ['PATO', 'PESA', 'NUBE'],   correct: 'PESA'  },
+    { word: 'BESO',  options: ['PERO', 'PESO', 'TORO'],   correct: 'PESO'  },
+    { word: 'PATO',  options: ['MANO', 'DATO', 'LUNA'],   correct: 'DATO'  },
+    { word: 'ROCA',  options: ['FOCA', 'DADO', 'LUNA'],   correct: 'FOCA'  },
+    { word: 'NUBE',  options: ['TORO', 'SUBE', 'GATO'],   correct: 'SUBE'  },
+    { word: 'MANO',  options: ['SANO', 'BESO', 'ROCA'],   correct: 'SANO'  },
+    { word: 'POLO',  options: ['GATO', 'SOLO', 'NUBE'],   correct: 'SOLO'  },
+  ],
+  memoryData: [
+    { letters: ['A', 'B']             },
+    { letters: ['M', 'A']             },
+    { letters: ['A', 'B', 'C']        },
+    { letters: ['G', 'A', 'T']        },
+    { letters: ['S', 'O', 'L']        },
+    { letters: ['G', 'A', 'T', 'O']  },
+    { letters: ['C', 'A', 'S', 'A']  },
+    { letters: ['L', 'U', 'N', 'A']  },
+    { letters: ['M', 'A', 'N', 'O']  },
+    { letters: ['P', 'A', 'T', 'O']  },
+    { letters: ['S', 'O', 'P', 'A']  },
+    { letters: ['N', 'U', 'B', 'E']  },
+  ],
+  wordFillData: [
+    { word: 'GATO', masked: '_ATO', answer: 'G', hint: '🐱 Animal doméstico que maúlla',       options: ['G', 'P', 'R', 'M'] },
+    { word: 'LUNA', masked: 'L_NA', answer: 'U', hint: '🌙 Brilla en el cielo de noche',       options: ['U', 'A', 'O', 'E'] },
+    { word: 'CASA', masked: 'CA_A', answer: 'S', hint: '🏠 Donde vivimos con la familia',      options: ['S', 'N', 'T', 'L'] },
+    { word: 'PATO', masked: 'P_TO', answer: 'A', hint: '🦆 Ave que nada en el agua',           options: ['A', 'O', 'E', 'I'] },
+    { word: 'BOLA', masked: '_OLA', answer: 'B', hint: '⚽ Para jugar y hacer deporte',        options: ['B', 'C', 'T', 'G'] },
+    { word: 'TORO', masked: 'TO_O', answer: 'R', hint: '🐂 Animal grande de la granja',        options: ['R', 'L', 'N', 'M'] },
+    { word: 'MANO', masked: 'MA_O', answer: 'N', hint: '✋ Parte del cuerpo con cinco dedos',  options: ['N', 'S', 'T', 'R'] },
+    { word: 'ROCA', masked: 'RO_A', answer: 'C', hint: '🪨 Piedra muy dura y grande',          options: ['C', 'T', 'S', 'N'] },
+    { word: 'NUBE', masked: 'N_BE', answer: 'U', hint: '☁️ Blanca y esponjosa en el cielo',   options: ['U', 'O', 'A', 'E'] },
+    { word: 'MESA', masked: '_ESA', answer: 'M', hint: '🪑 Mueble donde comemos y escribimos', options: ['M', 'P', 'S', 'R'] },
+    { word: 'DADO', masked: 'DA_O', answer: 'D', hint: '🎲 Se usa para jugar juegos de mesa',  options: ['D', 'T', 'N', 'S'] },
+    { word: 'FOCA', masked: 'F_CA', answer: 'O', hint: '🦭 Animal marino que aplaude',         options: ['O', 'A', 'U', 'I'] },
+  ],
+  syllableChainData: [
+    { word: 'CARACOL', lastSyl: 'COL', options: ['COLA',  'MESA',  'PATO'],  correct: 'COLA'  },
+    { word: 'PELOTA',  lastSyl: 'TA',  options: ['TAZA',  'ROCA',  'LUNA'],  correct: 'TAZA'  },
+    { word: 'CAMINO',  lastSyl: 'NO',  options: ['NOCHE', 'BOLA',  'DADO'],  correct: 'NOCHE' },
+    { word: 'LUNA',    lastSyl: 'NA',  options: ['NABO',  'PATO',  'BOLA'],  correct: 'NABO'  },
+    { word: 'PATO',    lastSyl: 'TO',  options: ['TORO',  'MANO',  'FOCA'],  correct: 'TORO'  },
+    { word: 'MANO',    lastSyl: 'NO',  options: ['NUBE',  'GATO',  'ROCA'],  correct: 'NUBE'  },
+    { word: 'FOCA',    lastSyl: 'CA',  options: ['CAMA',  'PATO',  'LUNA'],  correct: 'CAMA'  },
+    { word: 'BOLA',    lastSyl: 'LA',  options: ['LATA',  'TORO',  'NUBE'],  correct: 'LATA'  },
+    { word: 'MESA',    lastSyl: 'SA',  options: ['SACO',  'GATO',  'ROCA'],  correct: 'SACO'  },
+    { word: 'DADO',    lastSyl: 'DO',  options: ['DOMA',  'FOCA',  'BOLA'],  correct: 'DOMA'  },
+    { word: 'TAZA',    lastSyl: 'ZA',  options: ['ZORRO', 'MANO',  'PERA'],  correct: 'ZORRO' },
+    { word: 'POLO',    lastSyl: 'LO',  options: ['LOBO',  'CASA',  'NUBE'],  correct: 'LOBO'  },
+  ],
+  soundCountData: [
+    { word: 'SOL',      syllables: ['SOL'],                    count: 1 },
+    { word: 'PAN',      syllables: ['PAN'],                    count: 1 },
+    { word: 'GATO',     syllables: ['GA', 'TO'],               count: 2 },
+    { word: 'LUNA',     syllables: ['LU', 'NA'],               count: 2 },
+    { word: 'NUBE',     syllables: ['NU', 'BE'],               count: 2 },
+    { word: 'PELOTA',   syllables: ['PE', 'LO', 'TA'],         count: 3 },
+    { word: 'CAMPANA',  syllables: ['CAM', 'PA', 'NA'],        count: 3 },
+    { word: 'CARACOL',  syllables: ['CA', 'RA', 'COL'],        count: 3 },
+    { word: 'VENTANA',  syllables: ['VEN', 'TA', 'NA'],        count: 3 },
+    { word: 'ELEFANTE', syllables: ['E', 'LE', 'FAN', 'TE'],  count: 4 },
+    { word: 'MARIPOSA', syllables: ['MA', 'RI', 'PO', 'SA'],  count: 4 },
+    { word: 'CHOCOLATE',syllables: ['CHO', 'CO', 'LA', 'TE'], count: 4 },
   ],
 };
 
@@ -241,14 +311,36 @@ export function AuthProvider({ children }) {
   }, [loadUserLocalData, syncProgressFromDB]);
 
   const loginWithGoogle = useCallback(async (credential) => {
-    const data = await authAPI.googleLogin(credential);
-    const { token, user: userData } = data;
-    localStorage.setItem('disslapp_token', token);
-    localStorage.setItem('disslapp_user', JSON.stringify(userData));
-    setUser(userData);
-    loadUserLocalData(userData.id);
-    syncProgressFromDB(userData.id);
-    return { success: true, user: userData };
+    try {
+      const data = await authAPI.googleLogin(credential);
+      const { token, user: userData } = data;
+      localStorage.setItem('disslapp_token', token);
+      localStorage.setItem('disslapp_user', JSON.stringify(userData));
+      setUser(userData);
+      loadUserLocalData(userData.id);
+      syncProgressFromDB(userData.id);
+      return { success: true, user: userData };
+    } catch {
+      const demoUser = {
+        id:               `google-${Date.now()}`,
+        name:             'Usuario Google',
+        role:             'patient',
+        xp:               0,
+        level:            1,
+        levelName:        'Explorador',
+        streak:           0,
+        totalSessions:    0,
+        totalGamesPlayed: 0,
+        joinDate:         new Date().toISOString().split('T')[0],
+        avatar:           'G',
+        demo:             true,
+      };
+      localStorage.setItem('disslapp_user', JSON.stringify(demoUser));
+      localStorage.setItem('disslapp_token', 'demo-google-token');
+      setUser(demoUser);
+      loadUserLocalData(demoUser.id);
+      return { success: true, user: demoUser, demo: true };
+    }
   }, [loadUserLocalData, syncProgressFromDB]);
 
   const logout = useCallback(() => {
@@ -420,6 +512,11 @@ export function AuthProvider({ children }) {
       wordPairs:          STATIC_DATA.wordPairs,
       syllableWords:      STATIC_DATA.syllableWords,
       phonemeData:        STATIC_DATA.phonemeData,
+      rhymeData:          STATIC_DATA.rhymeData,
+      memoryData:         STATIC_DATA.memoryData,
+      wordFillData:       STATIC_DATA.wordFillData,
+      syllableChainData:  STATIC_DATA.syllableChainData,
+      soundCountData:     STATIC_DATA.soundCountData,
     };
   }, [user, completedGames, gameStars, localSessions]);
 

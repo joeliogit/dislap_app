@@ -28,6 +28,17 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Disslapp API is running' });
 });
 
+// Contact form (stores in DB or just acknowledges)
+app.post('/api/contact', async (req, res) => {
+  const { name, email, message } = req.body;
+  if (!name || !email || !message) {
+    return res.status(400).json({ message: 'Todos los campos son requeridos' });
+  }
+  // Log the message server-side; extend with email/DB storage as needed
+  console.log(`📧 Contacto de ${name} <${email}>: ${message}`);
+  res.json({ ok: true, message: 'Mensaje recibido' });
+});
+
 app.use(errorHandler);
 
 app.listen(PORT, () => {

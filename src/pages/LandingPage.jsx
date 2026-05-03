@@ -92,6 +92,29 @@ export default function LandingPage() {
               <div className="orbit-item" style={{ bottom: '-5%', left: '50%', transform: 'translateX(-50%)' }}>📊</div>
               <div className="orbit-item" style={{ top: '50%', left: '-5%', transform: 'translateY(-50%)' }}>🏆</div>
             </div>
+            <div className="hero-floating-cards">
+              <div className="hero-float-card hero-float-card--1">
+                <span className="hero-float-emoji">🌟</span>
+                <div>
+                  <div className="hero-float-label">XP Ganados</div>
+                  <div className="hero-float-value">+1,250</div>
+                </div>
+              </div>
+              <div className="hero-float-card hero-float-card--2">
+                <span className="hero-float-emoji">🔥</span>
+                <div>
+                  <div className="hero-float-label">Racha Actual</div>
+                  <div className="hero-float-value">7 días</div>
+                </div>
+              </div>
+              <div className="hero-float-card hero-float-card--3">
+                <span className="hero-float-emoji">🏆</span>
+                <div>
+                  <div className="hero-float-label">Logros</div>
+                  <div className="hero-float-value">12 / 12</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -105,24 +128,96 @@ export default function LandingPage() {
           </div>
           <div className="features-grid stagger-children">
             <div className="card feature-card card-glow">
-              <div className="feature-icon">🎮</div>
-              <h3>Juegos Terapéuticos</h3>
-              <p>8 juegos diseñados con principios pedagógicos científicos para trabajar diferentes habilidades.</p>
+              <div className="feature-icon-wrap feature-icon-wrap--purple">
+                <span className="feature-icon">🎮</span>
+              </div>
+              <h3>24 Juegos Terapéuticos</h3>
+              <p>Juegos diseñados con principios pedagógicos científicos para trabajar fonología, decodificación, memoria y comprensión lectora.</p>
+              <div className="feature-tag">Tier 1 gratuito</div>
             </div>
             <div className="card feature-card card-glow">
-              <div className="feature-icon">📈</div>
-              <h3>Niveles Progresivos</h3>
-              <p>5 niveles de tratamiento estructurados que adaptan la dificultad al avance del paciente.</p>
+              <div className="feature-icon-wrap feature-icon-wrap--green">
+                <span className="feature-icon">📈</span>
+              </div>
+              <h3>5 Niveles Progresivos</h3>
+              <p>Desde Explorador hasta Maestro Disslapp — cada nivel adapta la dificultad al avance real del paciente.</p>
+              <div className="feature-tag">Sistema XP</div>
             </div>
             <div className="card feature-card card-glow">
-              <div className="feature-icon">🏅</div>
-              <h3>Sistema de Logros</h3>
-              <p>Insignias, puntos XP y rachas diarias que mantienen la motivación alta durante el tratamiento.</p>
+              <div className="feature-icon-wrap feature-icon-wrap--orange">
+                <span className="feature-icon">🏅</span>
+              </div>
+              <h3>12 Logros y Rachas</h3>
+              <p>Insignias desbloqueables, puntos XP y rachas diarias que mantienen la motivación durante el tratamiento.</p>
+              <div className="feature-tag">Gamificación</div>
             </div>
             <div className="card feature-card card-glow">
-              <div className="feature-icon">📊</div>
-              <h3>Reportes Clínicos</h3>
-              <p>Gráficas de avance, historial de sesiones y reportes exportables para el profesional.</p>
+              <div className="feature-icon-wrap feature-icon-wrap--blue">
+                <span className="feature-icon">📊</span>
+              </div>
+              <h3>Panel Clínico</h3>
+              <p>Gráficas de avance, historial de sesiones, tiempo de respuesta por habilidad y métricas de tratamiento en tiempo real.</p>
+              <div className="feature-tag">Para psicólogos</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Game Preview */}
+      <section className="section game-preview-section">
+        <div className="container">
+          <div className="section-header reveal">
+            <h2>Juegos que hacen la diferencia</h2>
+            <p>Cada juego trabaja una habilidad específica. Los pacientes juegan, avanzan y tú mides el progreso.</p>
+          </div>
+          <div className="game-preview-grid reveal">
+            <div className="game-preview-card">
+              <div className="game-preview-icon" style={{ background: 'linear-gradient(135deg, #7C3AED, #A855F7)' }}>🔤</div>
+              <div className="game-preview-info">
+                <h4>Letras Saltarinas</h4>
+                <p>Ordena letras mezcladas para formar palabras</p>
+                <span className="game-preview-skill">Conciencia fonológica</span>
+              </div>
+            </div>
+            <div className="game-preview-card">
+              <div className="game-preview-icon" style={{ background: 'linear-gradient(135deg, #059669, #34D399)' }}>🪞</div>
+              <div className="game-preview-info">
+                <h4>El Espejo de Palabras</h4>
+                <p>Identifica palabras iguales o diferentes</p>
+                <span className="game-preview-skill">Discriminación visual</span>
+              </div>
+            </div>
+            <div className="game-preview-card">
+              <div className="game-preview-icon" style={{ background: 'linear-gradient(135deg, #DC2626, #F87171)' }}>🧩</div>
+              <div className="game-preview-info">
+                <h4>Construye la Palabra</h4>
+                <p>Ordena las sílabas para formar la palabra</p>
+                <span className="game-preview-skill">Decodificación</span>
+              </div>
+            </div>
+            <div className="game-preview-card">
+              <div className="game-preview-icon" style={{ background: 'linear-gradient(135deg, #D97706, #FBBF24)' }}>🎵</div>
+              <div className="game-preview-info">
+                <h4>Rima y Encuentra</h4>
+                <p>Selecciona la palabra que rima</p>
+                <span className="game-preview-skill">Rima y fonología</span>
+              </div>
+            </div>
+            <div className="game-preview-card">
+              <div className="game-preview-icon" style={{ background: 'linear-gradient(135deg, #0891B2, #22D3EE)' }}>🎤</div>
+              <div className="game-preview-info">
+                <h4>El Contador de Sonidos</h4>
+                <p>Cuenta las sílabas de cada palabra</p>
+                <span className="game-preview-skill">Conciencia fonémica</span>
+              </div>
+            </div>
+            <div className="game-preview-card">
+              <div className="game-preview-icon" style={{ background: 'linear-gradient(135deg, #DB2777, #F472B6)' }}>🔗</div>
+              <div className="game-preview-info">
+                <h4>La Cadena de Sílabas</h4>
+                <p>Encadena sílabas entre palabras</p>
+                <span className="game-preview-skill">Segmentación silábica</span>
+              </div>
             </div>
           </div>
         </div>

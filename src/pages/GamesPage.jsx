@@ -3,12 +3,34 @@
    ============================================ */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { launchConfetti } from '../utils/confetti';
 
+const SKILL_GRADIENTS = {
+  'Conciencia fonológica': 'linear-gradient(135deg, #7C3AED 0%, #A855F7 100%)',
+  'Discriminación visual':  'linear-gradient(135deg, #059669 0%, #34D399 100%)',
+  'Decodificación':         'linear-gradient(135deg, #DC2626 0%, #F87171 100%)',
+  'Conciencia fonémica':    'linear-gradient(135deg, #D97706 0%, #FBBF24 100%)',
+  'Segmentación silábica':  'linear-gradient(135deg, #2563EB 0%, #60A5FA 100%)',
+  'Rima y fonología':       'linear-gradient(135deg, #DB2777 0%, #F472B6 100%)',
+  'Memoria y secuencia':    'linear-gradient(135deg, #6D28D9 0%, #7C3AED 100%)',
+  'Reconocimiento visual':  'linear-gradient(135deg, #0891B2 0%, #22D3EE 100%)',
+  'Comprensión lectora':    'linear-gradient(135deg, #065F46 0%, #059669 100%)',
+  'Morfología':             'linear-gradient(135deg, #92400E 0%, #D97706 100%)',
+  'Vocabulario':            'linear-gradient(135deg, #1D4ED8 0%, #3B82F6 100%)',
+  'Fluidez lectora':        'linear-gradient(135deg, #BE185D 0%, #EC4899 100%)',
+  'Ortografía':             'linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%)',
+  'Escritura creativa':     'linear-gradient(135deg, #0F766E 0%, #14B8A6 100%)',
+  'Escritura':              'linear-gradient(135deg, #0F766E 0%, #14B8A6 100%)',
+  'Narración':              'linear-gradient(135deg, #B45309 0%, #F59E0B 100%)',
+  'Revisión general':       'linear-gradient(135deg, #7C3AED 0%, #A855F7 100%)',
+  'Maestría':               'linear-gradient(135deg, #78350F 0%, #F59E0B 100%)',
+};
+
 export default function GamesPage() {
   const { appData, isLoggedIn, updateXP, completeGame } = useAuth();
+  const navigate = useNavigate();
   const games  = appData.games;
   const skills = [...new Set(games.map(g => g.skill))];
   const [filter, setFilter]       = useState('all');
@@ -80,6 +102,31 @@ export default function GamesPage() {
         const posName  = posNames[posIndex] || `${posIndex + 1}ª`;
         const options  = [...wordData.syllables].sort(() => Math.random() - 0.5);
         setGameState({ type: 'syllable-color', wordData, posIndex, posName, answer, options, answered: false, feedback: null });
+        break;
+      }
+      case 'rhyme-match': {
+        const entry = appData.rhymeData[Math.floor(Math.random() * appData.rhymeData.length)];
+        setGameState({ type: 'rhyme-match', word: entry.word, options: entry.options, correct: entry.correct, answered: false, chosen: null, feedback: null });
+        break;
+      }
+      case 'memory-letters': {
+        const entry = appData.memoryData[Math.floor(Math.random() * appData.memoryData.length)];
+        setGameState({ type: 'memory-letters', letters: entry.letters, phase: 'memorize', input: '', attempts: 0, feedback: null });
+        break;
+      }
+      case 'word-fill': {
+        const entry = appData.wordFillData[Math.floor(Math.random() * appData.wordFillData.length)];
+        setGameState({ type: 'word-fill', word: entry.word, masked: entry.masked, answer: entry.answer, hint: entry.hint, options: entry.options, answered: false, chosen: null, feedback: null });
+        break;
+      }
+      case 'syllable-chain': {
+        const entry = appData.syllableChainData[Math.floor(Math.random() * appData.syllableChainData.length)];
+        setGameState({ type: 'syllable-chain', word: entry.word, lastSyl: entry.lastSyl, options: entry.options, correct: entry.correct, answered: false, chosen: null, feedback: null });
+        break;
+      }
+      case 'sound-count': {
+        const entry = appData.soundCountData[Math.floor(Math.random() * appData.soundCountData.length)];
+        setGameState({ type: 'sound-count', word: entry.word, syllables: entry.syllables, count: entry.count, answered: false, chosen: null, feedback: null });
         break;
       }
       default:
@@ -160,6 +207,56 @@ export default function GamesPage() {
     setTimeout(() => showResults(correct, correct ? 100 : 25, correct ? 3 : 1), 800);
   };
 
+  // ── Rhyme Match ──
+  const checkRhymeAnswer = (chosen) => {
+    if (!gameState || gameState.answered) return;
+    const correct = chosen === gameState.correct;
+    setGameState(prev => ({ ...prev, answered: true, chosen, feedback: correct ? 'correct' : 'wrong' }));
+    setTimeout(() => showResults(correct, correct ? 100 : 25, correct ? 3 : 1), 800);
+  };
+
+  // ── Word Fill ──
+  const checkWordFillAnswer = (letter) => {
+    if (!gameState || gameState.answered) return;
+    const correct = letter === gameState.answer;
+    setGameState(prev => ({ ...prev, answered: true, chosen: letter, feedback: correct ? 'correct' : 'wrong' }));
+    setTimeout(() => showResults(correct, correct ? 100 : 25, correct ? 3 : 1), 800);
+  };
+
+  // ── Syllable Chain ──
+  const checkSyllableChainAnswer = (chosen) => {
+    if (!gameState || gameState.answered) return;
+    const correct = chosen === gameState.correct;
+    setGameState(prev => ({ ...prev, answered: true, chosen, feedback: correct ? 'correct' : 'wrong' }));
+    setTimeout(() => showResults(correct, correct ? 100 : 25, correct ? 3 : 1), 800);
+  };
+
+  // ── Sound Count ──
+  const checkSoundCountAnswer = (count) => {
+    if (!gameState || gameState.answered) return;
+    const correct = count === gameState.count;
+    setGameState(prev => ({ ...prev, answered: true, chosen: count, feedback: correct ? 'correct' : 'wrong' }));
+    setTimeout(() => showResults(correct, correct ? 100 : 25, correct ? 3 : 1), 800);
+  };
+
+  // ── Memory Letters ──
+  const revealMemoryRecall = () => {
+    setGameState(prev => ({ ...prev, phase: 'recall' }));
+  };
+
+  const checkMemoryAnswer = () => {
+    if (!gameState) return;
+    const correct = gameState.input.trim().toUpperCase() === gameState.letters.join('');
+    const attempts = gameState.attempts || 0;
+    if (!correct && attempts < 2) {
+      setGameState(prev => ({ ...prev, feedback: 'wrong', attempts: attempts + 1, input: '', phase: 'memorize' }));
+      setTimeout(() => setGameState(prev => prev ? ({ ...prev, feedback: null }) : null), 600);
+    } else {
+      const stars = correct ? (attempts === 0 ? 3 : 2) : 1;
+      showResults(correct, correct ? (stars === 3 ? 100 : 75) : 25, stars);
+    }
+  };
+
   // ── Render Helpers ──
   const renderGameCard = (game, index) => {
     const starsHtml = Array.from({ length: game.maxStars }, (_, i) => (
@@ -182,7 +279,9 @@ export default function GamesPage() {
             <Link to="/precios" className="btn btn-primary btn-sm" onClick={e => e.stopPropagation()}>Ver Planes</Link>
           </div>
         )}
-        <div className="game-card-image">{game.emoji}</div>
+        <div className="game-card-image" style={{ background: SKILL_GRADIENTS[game.skill] || 'var(--gradient-accent)' }}>
+          <span className="game-card-emoji">{game.emoji}</span>
+        </div>
         <div className="game-card-body">
           <div className="game-card-tags">
             <span className="badge badge-purple">{game.skill}</span>
@@ -230,8 +329,8 @@ export default function GamesPage() {
           )}
         </div>
         <div className="results-actions">
-          <button className="btn btn-primary" onClick={closeGame}>Seguir Jugando</button>
-          <button className="btn btn-secondary" onClick={closeGame}>Ver Avances</button>
+          <button className="btn btn-primary" onClick={() => { const id = activeGame?.id; closeGame(); if (id) openGame(id); }}>Seguir Jugando</button>
+          <button className="btn btn-secondary" onClick={() => { closeGame(); navigate('/avances'); }}>Ver Avances</button>
         </div>
       </div>
     );
@@ -381,6 +480,159 @@ export default function GamesPage() {
                         >{syl}</button>
                       ))}
                     </div>
+                  </>
+                )}
+
+                {/* ── Rhyme Match ── */}
+                {gameState.type === 'rhyme-match' && (
+                  <>
+                    <p className="game-instruction">
+                      ¿Qué palabra <strong style={{ color: 'var(--purple-600)' }}>RIMA</strong> con...?
+                    </p>
+                    <div className="game-word-display">{gameState.word}</div>
+                    <div className="game-options">
+                      {gameState.options.map((opt, i) => (
+                        <button
+                          key={i}
+                          className={`game-option-btn ${gameState.answered && opt === gameState.correct ? 'correct' : ''} ${gameState.answered && opt === gameState.chosen && opt !== gameState.correct ? 'wrong' : ''}`}
+                          onClick={() => checkRhymeAnswer(opt)}
+                          disabled={gameState.answered}
+                        >{opt}</button>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {/* ── Memory Letters ── */}
+                {gameState.type === 'memory-letters' && (
+                  <>
+                    {gameState.phase === 'memorize' ? (
+                      <>
+                        <p className="game-instruction">¡Memoriza estas letras en orden!</p>
+                        <div className="memory-letters-display">
+                          {gameState.letters.map((l, i) => (
+                            <div key={i} className="memory-letter" style={{ animationDelay: `${i * 0.1}s` }}>{l}</div>
+                          ))}
+                        </div>
+                        <button className="btn btn-primary btn-lg" onClick={revealMemoryRecall}>
+                          ✅ ¡Listo! Esconderlas
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <p className="game-instruction">
+                          Escribe las <strong style={{ color: 'var(--purple-600)' }}>{gameState.letters.length}</strong> letras que viste en el mismo orden:
+                        </p>
+                        <div className="memory-blanks-row">
+                          {Array.from({ length: gameState.letters.length }, (_, i) => (
+                            <div key={i} className="memory-letter-blank">
+                              {gameState.input[i] || ''}
+                            </div>
+                          ))}
+                        </div>
+                        <input
+                          type="text"
+                          className={`form-input ${gameState.feedback === 'wrong' ? 'animate-wiggle' : ''}`}
+                          placeholder="Escribe las letras..."
+                          style={{ textAlign: 'center', fontSize: 'var(--font-size-xl)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '8px', maxWidth: '280px' }}
+                          maxLength={gameState.letters.length}
+                          value={gameState.input}
+                          onChange={e => setGameState(prev => ({ ...prev, input: e.target.value.toUpperCase() }))}
+                          onKeyDown={e => e.key === 'Enter' && checkMemoryAnswer()}
+                          autoFocus
+                        />
+                        <button className="btn btn-primary btn-lg" onClick={checkMemoryAnswer}>Comprobar ✓</button>
+                        {gameState.feedback === 'wrong' && (
+                          <p style={{ color: '#EF4444', fontWeight: 700 }}>¡Inténtalo de nuevo! 💪 Mira las letras otra vez.</p>
+                        )}
+                      </>
+                    )}
+                  </>
+                )}
+
+                {/* ── Word Fill ── */}
+                {gameState.type === 'word-fill' && (
+                  <>
+                    <p className="game-instruction">Pista: <strong>{gameState.hint}</strong></p>
+                    <div className="word-fill-display">
+                      {gameState.masked.split('').map((ch, i) => (
+                        <span key={i} className={ch === '_' ? 'word-fill-blank' : 'word-fill-char'}>
+                          {ch === '_' ? '?' : ch}
+                        </span>
+                      ))}
+                    </div>
+                    <p style={{ color: 'var(--text-muted)', fontSize: 'var(--font-size-sm)' }}>¿Qué letra va en el espacio marcado con <strong>?</strong></p>
+                    <div className="game-options">
+                      {gameState.options.map((letter, i) => (
+                        <button
+                          key={i}
+                          className={`game-option-btn ${gameState.answered && letter === gameState.answer ? 'correct' : ''} ${gameState.answered && letter === gameState.chosen && letter !== gameState.answer ? 'wrong' : ''}`}
+                          onClick={() => checkWordFillAnswer(letter)}
+                          disabled={gameState.answered}
+                          style={{ fontSize: 'var(--font-size-2xl)', minWidth: '72px' }}
+                        >{letter}</button>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {/* ── Syllable Chain ── */}
+                {gameState.type === 'syllable-chain' && (
+                  <>
+                    <p className="game-instruction">La última sílaba de una palabra es la primera de la siguiente.</p>
+                    <div className="syllable-chain-container">
+                      <div className="chain-word">
+                        <span style={{ color: 'var(--text-secondary)' }}>
+                          {gameState.word.slice(0, gameState.word.length - gameState.lastSyl.length)}
+                        </span>
+                        <span className="chain-highlight">{gameState.lastSyl}</span>
+                      </div>
+                      <div className="chain-arrow">↓</div>
+                      <div className="chain-question">
+                        ¿Qué palabra empieza con <strong style={{ color: 'var(--purple-600)', fontSize: 'var(--font-size-xl)' }}>{gameState.lastSyl}</strong>?
+                      </div>
+                    </div>
+                    <div className="game-options">
+                      {gameState.options.map((opt, i) => (
+                        <button
+                          key={i}
+                          className={`game-option-btn ${gameState.answered && opt === gameState.correct ? 'correct' : ''} ${gameState.answered && opt === gameState.chosen && opt !== gameState.correct ? 'wrong' : ''}`}
+                          onClick={() => checkSyllableChainAnswer(opt)}
+                          disabled={gameState.answered}
+                        >{opt}</button>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {/* ── Sound Count ── */}
+                {gameState.type === 'sound-count' && (
+                  <>
+                    <p className="game-instruction">
+                      ¿Cuántas <strong style={{ color: 'var(--purple-600)' }}>sílabas</strong> tiene esta palabra?
+                    </p>
+                    <div className="game-word-display">{gameState.word}</div>
+                    <p style={{ color: 'var(--text-muted)', fontSize: 'var(--font-size-sm)' }}>
+                      💡 Tip: da palmadas mientras la pronuncias en voz alta
+                    </p>
+                    <div className="game-options">
+                      {[1, 2, 3, 4].map(n => (
+                        <button
+                          key={n}
+                          className={`game-option-btn ${gameState.answered && n === gameState.count ? 'correct' : ''} ${gameState.answered && n === gameState.chosen && n !== gameState.count ? 'wrong' : ''}`}
+                          onClick={() => checkSoundCountAnswer(n)}
+                          disabled={gameState.answered}
+                          style={{ fontSize: 'var(--font-size-3xl)', minWidth: '80px', padding: 'var(--space-4) var(--space-6)' }}
+                        >{n}</button>
+                      ))}
+                    </div>
+                    {gameState.answered && (
+                      <div className="syllable-reveal">
+                        {gameState.syllables.map((s, i) => (
+                          <span key={i} className={`syllable-chip syl-color-${i % 4}`}>{s}</span>
+                        ))}
+                      </div>
+                    )}
                   </>
                 )}
 
