@@ -1,0 +1,118 @@
+/* ============================================
+   DISSLAPP — Footer
+   ============================================ */
+
+.footer {
+    background: var(--gray-900);
+    color: var(--gray-300);
+    padding: var(--space-16) 0 var(--space-8);
+}
+
+[data-theme="dark"] .footer {
+    background: #090612;
+}
+
+.footer-container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: var(--space-10);
+    margin-bottom: var(--space-12);
+}
+
+.footer-brand .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+}
+
+.footer-brand .brand-text {
+    color: var(--white);
+    font-size: var(--font-size-xl);
+    font-weight: 900;
+}
+
+.footer-tagline {
+    font-size: var(--font-size-sm);
+    line-height: 1.8;
+    color: var(--gray-400);
+    max-width: 300px;
+}
+
+.footer-links-group h4 {
+    color: var(--white);
+    font-size: var(--font-size-sm);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: var(--space-4);
+}
+
+.footer-links-group a {
+    display: block;
+    color: var(--gray-400);
+    font-size: var(--font-size-sm);
+    padding: var(--space-1) 0;
+    transition: color var(--transition-fast);
+}
+
+.footer-links-group a:hover {
+    color: var(--purple-400);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: var(--space-6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer-bottom p {
+    font-size: var(--font-size-sm);
+    color: var(--gray-500);
+}
+
+.footer-socials {
+    display: flex;
+    gap: var(--space-4);
+}
+
+.footer-socials a {
+    color: var(--gray-500);
+    transition: all var(--transition-fast);
+}
+
+.footer-socials a:hover {
+    color: var(--purple-400);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-8);
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: var(--space-4);
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+}
