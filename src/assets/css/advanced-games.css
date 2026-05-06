@@ -1,0 +1,780 @@
+/* ============================================
+   DISSLAPP — Advanced Games Page
+   ============================================ */
+
+/* ─── Page ──────────────────────────────────── */
+
+.adv-page {
+    padding-top: calc(var(--navbar-height) + var(--space-8));
+    padding-bottom: var(--space-16);
+    min-height: 100vh;
+}
+
+.adv-header {
+    margin-bottom: var(--space-8);
+}
+
+.adv-header h1 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-2);
+}
+
+.adv-header p {
+    color: var(--text-secondary);
+    font-size: var(--font-size-lg);
+}
+
+/* ─── Catalog Grid ───────────────────────────── */
+
+.adv-catalog {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-6);
+}
+
+.adv-card {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    cursor: pointer;
+    padding: 0;
+    border: none;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+}
+
+.adv-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.adv-card-img {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 56px;
+}
+
+.adv-card-body {
+    padding: var(--space-4) var(--space-5) var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.adv-skill-tag {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--purple-600);
+    background: var(--purple-100);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    align-self: flex-start;
+}
+
+.adv-card-body h3 {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.adv-card-body p {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ─── Modal Overlay ──────────────────────────── */
+
+.adv-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: var(--space-4);
+    animation: fadeIn 0.25s ease;
+}
+
+.adv-modal {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-xl);
+    width: 100%;
+    max-width: 680px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-xl, 0 20px 60px rgba(0,0,0,0.25));
+    animation: scaleIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+.adv-modal-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-5) var(--space-6);
+    color: white;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.adv-modal-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.adv-modal-head h2 {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    margin: 0 0 var(--space-1);
+    color: white;
+}
+
+.adv-modal-skill {
+    font-size: var(--font-size-sm);
+    opacity: 0.85;
+}
+
+.adv-modal-head > div {
+    flex: 1;
+}
+
+.adv-close-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s;
+    font-family: inherit;
+}
+
+.adv-close-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.adv-modal-body {
+    padding: var(--space-6);
+    flex: 1;
+}
+
+/* ─── Results (reuse existing classes) ──────── */
+
+/* .game-results, .results-* classes come from games.css */
+
+/* ─── Shared Game Utilities ──────────────────── */
+
+.btn-ghost {
+    background: transparent;
+    border: 2px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: var(--space-2) var(--space-5);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    font-family: inherit;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.btn-ghost:hover {
+    border-color: var(--purple-400);
+    color: var(--purple-600);
+}
+
+.btn-lg {
+    padding: var(--space-4) var(--space-10);
+    font-size: var(--font-size-lg);
+}
+
+/* ─── MEMORAMA ───────────────────────────────── */
+
+.memo-game {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.memo-hud {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    background: var(--bg-primary);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+}
+
+.memo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+}
+
+.memo-card {
+    aspect-ratio: 3 / 4;
+    perspective: 700px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+}
+
+.memo-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: var(--radius-md);
+}
+
+.memo-card.flipped .memo-inner {
+    transform: rotateY(180deg);
+}
+
+.memo-front,
+.memo-back {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-md);
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+}
+
+.memo-front {
+    background: var(--gradient-btn);
+    color: white;
+    font-size: var(--font-size-2xl);
+}
+
+.memo-back.word {
+    background: var(--purple-100);
+    color: var(--purple-700);
+    font-size: var(--font-size-base);
+    letter-spacing: 0.08em;
+    transform: rotateY(180deg);
+}
+
+.memo-back.emoji {
+    background: var(--green-100);
+    font-size: 2rem;
+    transform: rotateY(180deg);
+}
+
+.memo-card.matched .memo-front,
+.memo-card.matched .memo-back {
+    box-shadow: 0 0 0 3px var(--green-400);
+}
+
+.memo-card.matched .memo-back.word {
+    background: var(--green-100);
+    color: var(--green-700);
+}
+
+/* ─── IMÁN DE LETRAS ─────────────────────────── */
+
+.iman-game {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    align-items: center;
+}
+
+.iman-round-bar {
+    align-self: flex-end;
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.iman-hint-box {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    background: var(--bg-primary);
+    padding: var(--space-4) var(--space-6);
+    border-radius: var(--radius-lg);
+    width: 100%;
+}
+
+.iman-emoji {
+    font-size: 3rem;
+    line-height: 1;
+}
+
+.iman-hint-text {
+    font-size: var(--font-size-lg);
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.iman-drop-zone {
+    min-height: 72px;
+    width: 100%;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    transition: border-color 0.25s, background 0.25s;
+}
+
+.iman-drop-zone.is-correct {
+    border-color: var(--green-400);
+    background: var(--green-50);
+}
+
+.iman-drop-zone.is-wrong {
+    border-color: #F87171;
+    background: #FEF2F2;
+}
+
+.iman-placeholder {
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+    pointer-events: none;
+}
+
+.iman-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    justify-content: center;
+}
+
+.iman-tile {
+    width: 48px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--purple-300);
+    background: var(--purple-50);
+    color: var(--purple-700);
+    font-size: var(--font-size-xl);
+    font-weight: 800;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.iman-tile:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    background: var(--purple-100);
+}
+
+.iman-tile.placed {
+    background: var(--purple-600);
+    color: white;
+    border-color: var(--purple-700);
+}
+
+.iman-tile.placed:hover {
+    background: var(--purple-700);
+}
+
+.iman-feedback {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    margin: 0;
+}
+
+.iman-feedback.correct { color: var(--green-600); }
+.iman-feedback.wrong   { color: #DC2626; }
+
+.iman-actions {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: center;
+}
+
+/* ─── LLUVIA DE PALABRAS ─────────────────────── */
+
+.lluvia-game {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.lluvia-hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-primary);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+}
+
+.lluvia-stat {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.lluvia-timer {
+    color: var(--purple-600);
+}
+
+.lluvia-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+    padding: var(--space-8) 0;
+}
+
+.lluvia-rules {
+    text-align: center;
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 400px;
+    margin: 0;
+}
+
+.lluvia-arena {
+    position: relative;
+    width: 100%;
+    height: 340px;
+    background: linear-gradient(180deg, var(--purple-50) 0%, var(--bg-primary) 100%);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 2px solid var(--border-color);
+}
+
+.lluvia-word {
+    position: absolute;
+    transform: translateX(-50%);
+    padding: var(--space-2) var(--space-4);
+    background: white;
+    border: 2px solid var(--purple-300);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--purple-700);
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+    transition: transform 0.1s, box-shadow 0.1s;
+    box-shadow: var(--shadow-sm);
+}
+
+.lluvia-word:hover {
+    transform: translateX(-50%) scale(1.08);
+    box-shadow: var(--shadow-md);
+}
+
+/* ─── ESCUCHA Y ESCRIBE ──────────────────────── */
+
+.escucha-game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-5);
+    padding: var(--space-4) 0;
+}
+
+.escucha-progress {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    font-weight: 600;
+    align-self: flex-end;
+}
+
+.escucha-warning {
+    background: #FEF3C7;
+    color: #92400E;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    margin: 0;
+    text-align: center;
+}
+
+.escucha-play-btn {
+    background: var(--gradient-btn);
+    border: none;
+    color: white;
+    padding: var(--space-5) var(--space-10);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-2xl);
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 700;
+    box-shadow: var(--shadow-md);
+    transition: opacity 0.2s, transform 0.15s;
+}
+
+.escucha-play-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-lg);
+}
+
+.escucha-play-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.escucha-input {
+    width: 100%;
+    max-width: 380px;
+    padding: var(--space-4) var(--space-5);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-xl);
+    text-align: center;
+    font-family: inherit;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.escucha-input:focus {
+    border-color: var(--purple-400);
+}
+
+.escucha-input.is-correct {
+    border-color: var(--green-400);
+    background: var(--green-50);
+    color: var(--green-700);
+}
+
+.escucha-input.is-wrong {
+    border-color: #F87171;
+    background: #FEF2F2;
+    color: #DC2626;
+}
+
+.escucha-feedback {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    margin: 0;
+}
+
+.escucha-feedback.correct { color: var(--green-600); }
+.escucha-feedback.wrong   { color: #DC2626; }
+
+/* ─── SOPA DE LETRAS ─────────────────────────── */
+
+.sopa-game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.sopa-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    justify-content: center;
+}
+
+.sopa-tag {
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    border: 2px solid var(--border-color);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--text-secondary);
+    transition: all 0.25s;
+}
+
+.sopa-tag.found {
+    background: var(--green-100);
+    border-color: var(--green-400);
+    color: var(--green-700);
+    text-decoration: line-through;
+}
+
+.sopa-hint-msg {
+    font-size: var(--font-size-sm);
+    color: var(--purple-600);
+    font-weight: 600;
+    margin: 0;
+    background: var(--purple-50);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+}
+
+.sopa-board {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--bg-primary);
+    padding: var(--space-3);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--border-color);
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.sopa-row {
+    display: flex;
+    gap: 2px;
+}
+
+.sopa-cell {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s, color 0.15s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sopa-cell:hover {
+    background: var(--purple-100);
+    color: var(--purple-700);
+}
+
+.sopa-cell.hl {
+    background: var(--green-400);
+    color: white;
+}
+
+.sopa-cell.sel {
+    background: var(--purple-500);
+    color: white;
+    transform: scale(1.15);
+}
+
+.sopa-count {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    font-weight: 600;
+    margin: 0;
+}
+
+/* ─── Dark Mode ──────────────────────────────── */
+
+[data-theme="dark"] .memo-front {
+    background: var(--gradient-btn);
+}
+
+[data-theme="dark"] .memo-back.word {
+    background: var(--purple-800);
+    color: var(--purple-200);
+}
+
+[data-theme="dark"] .memo-back.emoji {
+    background: var(--green-800, #064E3B);
+}
+
+[data-theme="dark"] .iman-drop-zone {
+    border-color: var(--gray-600);
+    background: var(--gray-800, #1F2937);
+}
+
+[data-theme="dark"] .iman-tile {
+    background: var(--gray-700, #374151);
+    border-color: var(--purple-500);
+    color: var(--purple-300);
+}
+
+[data-theme="dark"] .iman-tile.placed {
+    background: var(--purple-600);
+    color: white;
+}
+
+[data-theme="dark"] .lluvia-arena {
+    background: linear-gradient(180deg, var(--gray-800, #1F2937) 0%, var(--gray-900, #111827) 100%);
+}
+
+[data-theme="dark"] .lluvia-word {
+    background: var(--gray-700, #374151);
+    border-color: var(--purple-500);
+    color: var(--purple-300);
+}
+
+[data-theme="dark"] .sopa-board {
+    background: var(--gray-800, #1F2937);
+}
+
+[data-theme="dark"] .sopa-cell {
+    background: var(--gray-700, #374151);
+    color: var(--gray-100);
+}
+
+[data-theme="dark"] .sopa-cell:hover {
+    background: var(--purple-800);
+    color: var(--purple-200);
+}
+
+[data-theme="dark"] .escucha-input {
+    background: var(--gray-800, #1F2937);
+    color: var(--gray-100);
+    border-color: var(--gray-600);
+}
+
+/* ─── Responsive ─────────────────────────────── */
+
+@media (max-width: 480px) {
+    .memo-grid {
+        gap: var(--space-2);
+    }
+
+    .sopa-cell {
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
+    }
+
+    .adv-modal-head {
+        padding: var(--space-4);
+    }
+
+    .adv-modal-body {
+        padding: var(--space-4);
+    }
+
+    .lluvia-arena {
+        height: 280px;
+    }
+}

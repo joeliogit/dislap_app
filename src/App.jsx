@@ -17,6 +17,7 @@ import DoctorPage from './pages/DoctorPage';
 import DoctorPanelPage from './pages/DoctorPanelPage';
 import AboutPage from './pages/AboutPage';
 import PricingPage from './pages/PricingPage';
+import AdvancedGamesPage from './pages/AdvancedGamesPage';
 
 function AppContent() {
   const location = useLocation();
@@ -35,8 +36,9 @@ function AppContent() {
           <Route path="/niveles"       element={<LevelsPage />} />
           <Route path="/avances"       element={<ProgressPage />} />
           <Route path="/doctora"       element={<DoctorPage />} />
-          <Route path="/nosotros"      element={<AboutPage />} />
-          <Route path="/precios"       element={<PricingPage />} />
+          <Route path="/nosotros"          element={<AboutPage />} />
+          <Route path="/precios"           element={<PricingPage />} />
+          <Route path="/juegos-avanzados"  element={<AdvancedGamesPage />} />
         </Routes>
       </main>
       {!hideFooter && <Footer />}

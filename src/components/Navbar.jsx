@@ -52,6 +52,7 @@ export default function Navbar() {
   const navLinks = [
     { to: '/', label: 'Inicio', page: 'landing' },
     { to: '/juegos', label: 'Juegos', page: 'games' },
+    { to: '/juegos-avanzados', label: 'Avanzados', page: 'advanced' },
     { to: '/niveles', label: 'Niveles', page: 'levels' },
     { to: '/avances', label: 'Avances', page: 'progress' },
     { to: '/doctora', label: 'La Doctora', page: 'doctor' },

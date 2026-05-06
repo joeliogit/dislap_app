@@ -17,6 +17,7 @@ import './assets/css/doctor-panel.css'
 import './assets/css/about.css'
 import './assets/css/navbar.css'
 import './assets/css/footer.css'
+import './assets/css/advanced-games.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
