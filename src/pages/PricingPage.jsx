@@ -10,9 +10,9 @@ import { paymentsAPI } from '../services/api';
 import '../assets/css/pricing.css';
 
 const PLAN_META = {
-  free:    { icon: '🌱', color: 'green',  label: 'Gratuito' },
-  pro:     { icon: '🚀', color: 'purple', label: 'Pro'      },
-  premium: { icon: '🏆', color: 'purple', label: 'Clínica'  },
+  free: { icon: '🌱', color: 'green', label: 'Gratuito' },
+  pro: { icon: '🚀', color: 'purple', label: 'Pro' },
+  premium: { icon: '🏆', color: 'purple', label: 'Clínica' },
 };
 
 const FALLBACK_PLANS = [
@@ -31,7 +31,7 @@ const FALLBACK_PLANS = [
   {
     id: 'pro',
     name: 'Pro',
-    price: 9.99,
+    price: 175,
     features: [
       '15 juegos terapéuticos (Niveles 1–3)',
       'Analíticas detalladas por sesión',
@@ -44,7 +44,7 @@ const FALLBACK_PLANS = [
   {
     id: 'premium',
     name: 'Clínica',
-    price: 24.99,
+    price: 435,
     features: [
       'Acceso completo a los 24 juegos',
       'Panel del psicólogo incluido',
@@ -65,9 +65,9 @@ const FAQS = [
 
 function PlanCard({ plan, currentPlan, onSubscribe, loading }) {
   const isCurrentPlan = currentPlan === plan.id;
-  const isFree        = plan.id === 'free';
-  const isPopular     = plan.id === 'pro';
-  const meta          = PLAN_META[plan.id] || {};
+  const isFree = plan.id === 'free';
+  const isPopular = plan.id === 'pro';
+  const meta = PLAN_META[plan.id] || {};
 
   return (
     <div className={`plan-card${isPopular ? ' popular' : ''} animate-fade-in-up`}>
@@ -106,9 +106,9 @@ function PlanCard({ plan, currentPlan, onSubscribe, loading }) {
 const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID || 'sb';
 
 function PaymentModal({ plan, onClose, onSuccess }) {
-  const [method,     setMethod]     = useState('card');
+  const [method, setMethod] = useState('card');
   const [stripeLoad, setStripeLoad] = useState(false);
-  const [error,      setError]      = useState('');
+  const [error, setError] = useState('');
 
   const handleStripeCheckout = async () => {
     setError('');
@@ -228,15 +228,15 @@ function SuccessModal({ plan, onClose }) {
 
 export default function PricingPage() {
   const { user, isLoggedIn, updateSubscription } = useAuth();
-  const navigate      = useNavigate();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const [plans,        setPlans]        = useState([]);
+  const [plans, setPlans] = useState([]);
   const [loadingPlans, setLoadingPlans] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState(null);
-  const [successPlan,  setSuccessPlan]  = useState(null);
-  const [faqOpen,      setFaqOpen]      = useState(null);
-  const [subscribing,  setSubscribing]  = useState(false);
+  const [successPlan, setSuccessPlan] = useState(null);
+  const [faqOpen, setFaqOpen] = useState(null);
+  const [subscribing, setSubscribing] = useState(false);
 
   const currentPlan = user?.subscription_plan || 'free';
 
@@ -306,8 +306,8 @@ export default function PricingPage() {
             <div className="current-plan-banner-text">
               <strong>Tu plan actual: {currentMeta.label}</strong>
               <span>
-                {currentPlan === 'free'    && 'Acceso a los primeros 5 juegos'}
-                {currentPlan === 'pro'     && 'Acceso a los primeros 15 juegos'}
+                {currentPlan === 'free' && 'Acceso a los primeros 5 juegos'}
+                {currentPlan === 'pro' && 'Acceso a los primeros 15 juegos'}
                 {currentPlan === 'premium' && 'Acceso completo a los 24 juegos'}
               </span>
             </div>

@@ -74,7 +74,7 @@ export default function AboutPage() {
           <div className="history-content">
             <div className="history-text">
               <h2>Nuestra <span className="text-gradient">Historia</span></h2>
-              <p>Disslapp nació en 2023 cuando la Dra. Elena Martínez, después de más de una década tratando pacientes con dislexia, identificó una necesidad crítica: las herramientas digitales disponibles no estaban diseñadas por clínicos, no eran motivadoras y no generaban datos útiles para el profesional.</p>
+              <p>Disslapp nació en 2023 cuando la Dra. Olivia Sepulveda, después de más de una década tratando pacientes con dislexia, identificó una necesidad crítica: las herramientas digitales disponibles no estaban diseñadas por clínicos, no eran motivadoras y no generaban datos útiles para el profesional.</p>
               <p>Reunió a un equipo de desarrolladores, diseñadores y neuropsicólogos para crear una plataforma que combinara lo mejor de la ciencia del aprendizaje con técnicas de gamificación probadas. El resultado es Disslapp: una herramienta que los pacientes quieren usar y los profesionales necesitan.</p>
               <p>Hoy, cientos de psicólogos confían en Disslapp para complementar sus tratamientos, y miles de pacientes han experimentado mejoras significativas en sus habilidades lectoras.</p>
             </div>
@@ -106,9 +106,9 @@ export default function AboutPage() {
           <h2>Nuestro <span className="text-gradient">Equipo</span></h2>
           <div className="team-grid stagger-children">
             {[
-              { avatar: '👩‍⚕️', name: 'Dra. Elena Martínez', role: 'Fundadora & Directora Clínica', bio: 'Neuropsicóloga con 15+ años de experiencia en dislexia. Diseña la metodología terapéutica de la plataforma.' },
-              { avatar: '👨‍💻', name: 'Carlos Méndez', role: 'Director de Tecnología', bio: 'Ingeniero de software especializado en aplicaciones educativas y experiencias interactivas.' },
-              { avatar: '👩‍🎨', name: 'Sofía Velasco', role: 'Diseñadora UX/UI', bio: 'Diseñadora de experiencias accesibles con enfoque en usabilidad para niños y adolescentes.' },
+              { avatar: '👩‍⚕️', name: 'Dra. Olivia Sepulveda', role: 'Fundadora & Directora Clínica', bio: 'Neuropsicóloga con 15+ años de experiencia en dislexia. Diseña la metodología terapéutica de la plataforma.' },
+              { avatar: '👨‍💻', name: 'Sócrates Lugo Zavala', role: 'Director de Tecnología', bio: 'Ingeniero de software especializado en aplicaciones educativas y experiencias interactivas.' },
+              { avatar: '👩‍🎨', name: 'Anabell Cota Ramírez', role: 'Diseñadora UX/UI', bio: 'Diseñadora de experiencias accesibles con enfoque en usabilidad para niños y adolescentes.' },
             ].map((m, i) => (
               <div key={i} className="card team-card">
                 <div className="team-avatar">{m.avatar}</div>
@@ -200,7 +200,7 @@ export default function AboutPage() {
             </div>
             <div className="contact-info-item">
               <span className="info-icon">📍</span>
-              <span>Ciudad de México, México</span>
+              <span>Los Mochis, Sinaloa</span>
             </div>
             <div className="contact-info-item">
               <span className="info-icon">📱</span>

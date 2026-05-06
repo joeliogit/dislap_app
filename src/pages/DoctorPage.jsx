@@ -32,7 +32,7 @@ export default function DoctorPage() {
             </div>
           </div>
           <div className="doctor-info animate-slide-right">
-            <h1>Dra. Elena Martínez Ruiz</h1>
+            <h1>Dra. Olivia Sepulveda</h1>
             <div className="doctor-title">Neuropsicóloga Clínica · Especialista en Dislexia y Neurodesarrollo</div>
 
             <blockquote className="doctor-quote">
