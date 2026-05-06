@@ -69,16 +69,56 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Our Story */}
+        {/* Our Story — Timeline */}
         <div className="history-section reveal">
-          <div className="history-content">
-            <div className="history-text">
-              <h2>Nuestra <span className="text-gradient">Historia</span></h2>
-              <p>Disslapp nació en 2023 cuando la Dra. Olivia Sepulveda, después de más de una década tratando pacientes con dislexia, identificó una necesidad crítica: las herramientas digitales disponibles no estaban diseñadas por clínicos, no eran motivadoras y no generaban datos útiles para el profesional.</p>
-              <p>Reunió a un equipo de desarrolladores, diseñadores y neuropsicólogos para crear una plataforma que combinara lo mejor de la ciencia del aprendizaje con técnicas de gamificación probadas. El resultado es Disslapp: una herramienta que los pacientes quieren usar y los profesionales necesitan.</p>
-              <p>Hoy, cientos de psicólogos confían en Disslapp para complementar sus tratamientos, y miles de pacientes han experimentado mejoras significativas en sus habilidades lectoras.</p>
-            </div>
-            <div className="history-image">🌱</div>
+          <h2>Nuestra <span className="text-gradient">Historia</span></h2>
+          <p style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto var(--space-10)', color: 'var(--text-secondary)', fontSize: 'var(--font-size-lg)' }}>
+            Lo que comenzó como una necesidad personal se convirtió en un proyecto premiado a nivel nacional y hoy en una plataforma que busca transformar vidas.
+          </p>
+          <div className="timeline">
+            {[
+              {
+                year: '2021',
+                emoji: '💡',
+                title: 'La Idea Nace',
+                desc: 'Durante la pandemia, la falta de herramientas tecnológicas para continuar el tratamiento de la dislexia de manera remota reveló una necesidad urgente. Así nació la primera visión de Disslapp, presentada en el Foro de Jóvenes Emprendedores del Instituto de Negocios e Innovación (INEI).',
+              },
+              {
+                year: '2022',
+                emoji: '🏆',
+                title: 'Reconocimiento Nacional',
+                desc: 'El proyecto, mejorado como Semillero de Ideas, ganó el primer lugar en la 7ª edición del Foro de Jóvenes Emprendedores de INEI. Posteriormente, compitió en Informatrix a nivel nacional, donde obtuvo el tercer lugar como Semillero de Ideas.',
+              },
+              {
+                year: '2023–24',
+                emoji: '📚',
+                title: 'Preparación Académica',
+                desc: 'El desarrollo se pausó estratégicamente para fortalecer la formación académica. Este periodo de crecimiento profesional fue clave para adquirir las habilidades técnicas necesarias para llevar el proyecto al siguiente nivel.',
+              },
+              {
+                year: '2025',
+                emoji: '🚀',
+                title: 'El Equipo se Forma',
+                desc: 'Al ingresar a la universidad, se retoma el proyecto con fuerza. Se contacta a la Lic. Olivia Sepulveda como asesora clínica experta en dislexia, quien brinda su apoyo total al proyecto. Con la ayuda de Salvador se conforma el equipo multidisciplinario que hoy impulsa Disslapp.',
+              },
+              {
+                year: 'Hoy',
+                emoji: '🌟',
+                title: 'Primeras Pruebas Clínicas',
+                desc: 'Se realizaron encuestas en INEI para dimensionar la prevalencia de dislexia. La Lic. Olivia Sepulveda colabora activamente como experta clínica y facilitará los primeros pacientes piloto que probarán la plataforma. Disslapp se prepara para su lanzamiento oficial.',
+              },
+            ].map((item, i) => (
+              <div key={i} className="timeline-item" style={{ animationDelay: `${i * 0.15}s` }}>
+                <div className="timeline-marker">
+                  <span className="timeline-dot">{item.emoji}</span>
+                  <span className="timeline-year">{item.year}</span>
+                </div>
+                <div className="card timeline-card">
+                  <h4>{item.title}</h4>
+                  <p>{item.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
